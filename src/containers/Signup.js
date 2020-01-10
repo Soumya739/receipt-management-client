@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Button, Modal, Checkbox, Form } from 'semantic-ui-react'
 import { connect } from 'react-redux';
+import { api } from '../services/api'
 
 
 export class Signup extends Component {
@@ -24,7 +25,8 @@ export class Signup extends Component {
     }
     handleFormSubmit = (e) => {
         e.preventDefault();
-        console.log(this.state)
+        api.user.CreateUser(this.state)
+            .then(user => console.log(user))
     }
 
     render() {
