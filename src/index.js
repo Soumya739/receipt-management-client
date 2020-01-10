@@ -9,7 +9,8 @@ import { createStore } from 'redux'
 import reducer from './reducers'
 
 const initialState = {
-    userExists: false
+    userExists: false,
+    current_user: {}
 }
 const store = createStore(reducer, initialState)
 

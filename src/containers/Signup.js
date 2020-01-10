@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import { Button, Modal, Checkbox, Form } from 'semantic-ui-react'
 import { connect } from 'react-redux';
-import { api } from '../services/api'
-
+import { api } from '../services/api';
+import { login } from '../actions/login';
 
 export class Signup extends Component {
     constructor() {
@@ -20,13 +20,15 @@ export class Signup extends Component {
     }
 
     handleFormInput = (e) => {
-        console.log(e.target.id, e.target.value);
         this.setState({ ...this.state, [e.target.id]: e.target.value })
     }
+
     handleFormSubmit = (e) => {
         e.preventDefault();
         api.user.CreateUser(this.state)
-            .then(user => console.log(user))
+            .then(user => {
+                this.props.login(user)
+            })
     }
 
     render() {
@@ -87,8 +89,11 @@ export class Signup extends Component {
     }
 }
 
+const mapDispatchToProps = dispatch => {
+    return {
+        login: (user) => dispatch(login(user)),
+    }
+}
 
-
-
-export default connect()(Signup)
+export default connect(null, mapDispatchToProps)(Signup)
 

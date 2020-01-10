@@ -1,5 +1,4 @@
 const Base_URL = "http://localhost:3000"
-let CURRENT_USER = {}
 
 const Login = (data, password = {}) => {
     let userDetails = Object.assign(data, password)
@@ -16,15 +15,14 @@ const Login = (data, password = {}) => {
         .then(resp => resp.json())
         .then(res => {
             if (!res.error) {
-                CURRENT_USER = res
-                return res
+                localStorage.setItem('token', res.jwt);
+                return { username: res.username, email: res.email }
             } else {
                 alert(res.error)
                 window.location.replace("http://localhost:3001/")
             }
         })
 };
-
 
 const CreateUser = (data) => {
     return fetch(Base_URL + '/users', {
@@ -52,13 +50,11 @@ const CreateUser = (data) => {
         .then((user) => Login(user, { password: data.password }))
 }
 
-
 export const api = {
     auth: {
         Login
     },
     user: {
         CreateUser,
-        CURRENT_USER
     }
 };
