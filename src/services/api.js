@@ -19,7 +19,6 @@ const Login = (data, password = {}) => {
                 return { username: res.username, email: res.email }
             } else {
                 alert(res.error)
-                window.location.replace("http://localhost:3001/")
             }
         })
 };

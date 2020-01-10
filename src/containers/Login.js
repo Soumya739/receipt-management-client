@@ -23,8 +23,10 @@ export class Login extends Component {
     handleFormSubmittion = (e) => {
         e.preventDefault()
         api.auth.Login(this.state.fields)
-            .then(user => {
-                this.props.login(user)
+            .then(res => {
+                if (!!res) {
+                    this.props.login(res)
+                }
             })
     }
 

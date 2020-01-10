@@ -26,8 +26,10 @@ export class Signup extends Component {
     handleFormSubmit = (e) => {
         e.preventDefault();
         api.user.CreateUser(this.state)
-            .then(user => {
-                this.props.login(user)
+            .then(res => {
+                if (!!res) {
+                    this.props.login(res)
+                }
             })
     }
 
