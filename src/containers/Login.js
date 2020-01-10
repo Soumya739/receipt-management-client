@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import { Button, Modal, Form } from 'semantic-ui-react'
 import { api } from '../services/api'
-
-
+import { connect } from 'react-redux';
+import { login } from '../actions/login';
 
 export class Login extends Component {
     constructor() {
@@ -23,6 +23,9 @@ export class Login extends Component {
     handleFormSubmittion = (e) => {
         e.preventDefault()
         api.auth.Login(this.state.fields)
+            .then(user => {
+                this.props.login(user)
+            })
     }
 
     render() {
@@ -56,6 +59,12 @@ export class Login extends Component {
     }
 }
 
-export default Login
+const mapDispatchToProps = dispatch => {
+    return {
+        login: (user) => dispatch(login(user)),
+    }
+}
+
+export default connect(null, mapDispatchToProps)(Login)
 
 
