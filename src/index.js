@@ -11,7 +11,6 @@ import reducer from './reducers'
 const initialState = {
     userExists: false
 }
-
 const store = createStore(reducer, initialState)
 
 ReactDOM.render(
