@@ -14,8 +14,7 @@ const Login = (data, password = {}) => {
         .then(resp => resp.json())
         .then(res => {
             if (!res.error) {
-                localStorage.setItem('token', res.jwt);
-                return res.user
+                return res
             } else {
                 alert(res.error)
             }

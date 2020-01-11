@@ -27,12 +27,14 @@ export class Signup extends Component {
         e.preventDefault();
         api.user.CreateUser(this.state)
             .then(res => {
-                if (!!res) {
+                if (!!res.user) {
                     this.props.login(res)
                 }
             })
     }
-
+    handleTrigger = () => {
+        // code to trigger 
+    }
     render() {
         let { username, email, contact_num, city, country, state, password, password_confirmation } = this.state
         return (
@@ -78,7 +80,7 @@ export class Signup extends Component {
                                     <Checkbox label='I agree to the Terms and Conditions' />
                                 </Form.Field>
                                 <Button.Group>
-                                    <Button negative>Cancel</Button>
+                                    <Button negative onClick={this.handleTrigger}>Cancel</Button>
                                     <Button.Or />
                                     <Button positive type="submit">Signup</Button>
                                 </Button.Group>

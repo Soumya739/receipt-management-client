@@ -1,7 +1,8 @@
-export const login = (userDetails) => {
+export const login = (data) => {
+    console.log("in login action")
     return {
         type: "LOGIN",
-        payload: userDetails
+        payload: data
     }
 }
 

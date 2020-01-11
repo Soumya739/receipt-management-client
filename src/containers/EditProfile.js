@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Button, Modal, Checkbox, Form } from 'semantic-ui-react'
+import { Button, Checkbox, Form } from 'semantic-ui-react'
 import { connect } from 'react-redux';
 import { api } from '../services/api';
 import { editProfile } from '../actions/profile'
@@ -30,8 +30,8 @@ export class EditProfile extends Component {
         e.preventDefault();
         api.user.UpdateCurrentUser(this.state)
             .then(res => {
-                if (!!res) {
-                    this.props.editProfile(res)
+                if (!!res.user) {
+                    this.props.editProfile(res.user)
                     this.handleEditTrigger()
                 } else {
                     this.props.logout()

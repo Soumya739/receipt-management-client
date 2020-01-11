@@ -16,7 +16,7 @@ export class Profile extends Component {
     }
 
     render() {
-        console.log(this.props.current_user)
+        // console.log(this.props.current_user)
         let { username, email, city, country, contact_num, state } = this.props.current_user
         if (this.state.editTrigger) {
             return <EditProfile currentUser={this.props.current_user} onhandleEditTrigger={this.handleEditTrigger} />
