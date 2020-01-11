@@ -7,8 +7,11 @@ import MainContainer from './MainContainer';
 import Footer from '../components/Footer'
 
 export class App extends Component {
+  componentDidMount() {
+    localStorage.removeItem('token')
+  }
   render() {
-    if (this.props.userExists || localStorage.getItem('token')) {
+    if (this.props.userExists && localStorage.getItem('token')) {
       return (
         <div>
           <Navbar />

@@ -2,7 +2,6 @@ const Base_URL = "http://localhost:3000"
 
 const Login = (data, password = {}) => {
     let userDetails = Object.assign(data, password)
-    console.log("data", data, password, userDetails)
     return fetch(`${Base_URL}/auth`, {
         method: 'POST',
         headers: {
@@ -16,7 +15,7 @@ const Login = (data, password = {}) => {
         .then(res => {
             if (!res.error) {
                 localStorage.setItem('token', res.jwt);
-                return { username: res.username, email: res.email }
+                return res.user
             } else {
                 alert(res.error)
             }
@@ -49,11 +48,38 @@ const CreateUser = (data) => {
         .then((user) => Login(user, { password: data.password }))
 }
 
+const UpdateCurrentUser = (userDetails) => {
+    return fetch(Base_URL + `/users/${userDetails.id}`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+            Accepts: 'application/json',
+            Authorization: localStorage.getItem('token')
+        },
+        body: JSON.stringify({
+            user: {
+                username: userDetails.username,
+                email: userDetails.email,
+                contact_num: userDetails.contact_num,
+                city: userDetails.city,
+                country: userDetails.country,
+                state: userDetails.state,
+                password: userDetails.password,
+                password_confirmation: userDetails.password_confirmation
+            }
+        })
+    }
+    )
+        .then(resp => resp.json())
+        .then((user) => Login(user, { password: userDetails.password }))
+}
+
 export const api = {
     auth: {
         Login
     },
     user: {
         CreateUser,
+        UpdateCurrentUser,
     }
 };

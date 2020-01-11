@@ -13,6 +13,11 @@ const reducer = (state, action) => {
                 userExists: false,
                 current_user: {}
             }
+        case "EDIT_PROFILE":
+            return {
+                ...state,
+                current_user: action.payload
+            }
         default:
             return state
     }
