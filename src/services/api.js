@@ -73,6 +73,21 @@ const UpdateCurrentUser = (userDetails) => {
         .then((user) => Login(user, { password: userDetails.password }))
 }
 
+const GetUserReceipts = (userID) => {
+    return fetch(Base_URL + "/user_receipts", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            Accepts: 'application/json',
+            Authorization: localStorage.getItem('token')
+        },
+        body: JSON.stringify({
+            user_id: userID
+        })
+    }).then(resp => resp.json())
+}
+
+
 export const api = {
     auth: {
         Login
@@ -80,5 +95,8 @@ export const api = {
     user: {
         CreateUser,
         UpdateCurrentUser,
+    },
+    receipt: {
+        GetUserReceipts,
     }
 };
