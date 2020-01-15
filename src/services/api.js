@@ -90,6 +90,20 @@ const GetUserReceipts = (userID) => {
     }).then(resp => resp.json())
 }
 
+// const getAllExpenseType = () => {
+//     return fetch(Base_URL + "/expense_types", {
+//         method: "POST",
+//         headers: {
+//             "Content-Type": "application/json",
+//             Accepts: 'application/json',
+//             Authorization: localStorage.getItem('token')
+//         },
+//         body: JSON.stringify({
+//             user_id: userID
+//         })
+//     }).then(resp => resp.json())
+// }
+
 
 export const api = {
     auth: {
@@ -101,5 +115,8 @@ export const api = {
     },
     receipt: {
         GetUserReceipts,
-    }
+    },
+    // expenseType: {
+    //     getAllExpenseType
+    // }
 };
