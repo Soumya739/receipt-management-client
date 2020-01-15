@@ -13,6 +13,7 @@ export class RangeCalendar extends Component {
             endDate: null
         }
     }
+
     render() {
         return (
             <div>

@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Button, Form, Dropdown, Segment, Icon } from 'semantic-ui-react'
 import { connect } from 'react-redux';
 import axios from 'axios';
+import AddTextField from './AddTextField'
 
 export class ReceiptDetailsForm extends Component {
     constructor(props) {
@@ -18,6 +19,43 @@ export class ReceiptDetailsForm extends Component {
 
     handleFormInput = (e) => {
         this.setState({ ...this.state, [e.target.id]: e.target.value, image: this.props.image })
+    }
+
+    onAdditionToExpenseType = (array) => {
+        array.map((tag) => {
+            console.log(tag)
+            this.setState({ expense_type: [...this.state.expense_type, tag] })
+        })
+    }
+    conditionForSubmit = () => {
+        let { image, store, total_amount, generated_on, user_id, expense_type } = this.state
+        return (
+            image === "" ||
+            store === "" ||
+            total_amount === 0 ||
+            generated_on === "" ||
+            user_id === "" ||
+            expense_type.length === 0
+        )
+    }
+    onResetForm = () => {
+        this.setState({
+            image: "",
+            store: "",
+            total_amount: 0,
+            generated_on: "",
+            user_id: this.props.current_user.id,
+            expense_type: []
+        })
+    }
+
+    handleFormSummissionProcess = (e) => {
+        const index = this.state.expense_type.indexOf("other");
+        console.log("other index", index)
+        if (index > -1) {
+            this.state.expense_type.splice(index, 1);
+        }
+        this.handleFormSubmit(e)
     }
 
     handleFormSubmit = (e) => {
@@ -49,6 +87,14 @@ export class ReceiptDetailsForm extends Component {
     onChangeselection = (e, { value }) => {
         this.setState({ ...this.state, expense_type: value })
     }
+    onOtherSelection = () => {
+        if (this.state.expense_type.includes("other")) {
+            return (
+                <AddTextField onAdditionToExpenseType={this.onAdditionToExpenseType} />
+            )
+        }
+    }
+
 
     options = () => {
         return (
@@ -74,7 +120,7 @@ export class ReceiptDetailsForm extends Component {
         return (
             <Segment>
                 <h2 className="centered"><Icon name='compose' />Enter Receipt Details</h2>
-                <Form onSubmit={(e) => this.handleFormSubmit(e)}>
+                <Form onSubmit={(e) => this.handleFormSummissionProcess(e)}>
                     <Form.Field>
                         <label><Icon name='map marker' />Store:</label>
                         <input placeholder='Store Name' id="store" value={store} onChange={(e) => this.handleFormInput(e)} required />
@@ -85,16 +131,17 @@ export class ReceiptDetailsForm extends Component {
                     </Form.Field>
                     <Form.Field>
                         <label><Icon name='calendar alternate' />Generated on:</label>
-                        <input placeholder='Date: yyyy-mm-dd' id="generated_on" value={generated_on} onChange={(e) => this.handleFormInput(e)} required />
+                        <input type="date" placeholder='Date: mm/dd/yyyy' id="generated_on" value={generated_on} onChange={(e) => this.handleFormInput(e)} required />
                     </Form.Field>
                     <Form.Field>
                         <label><Icon name='tags' />Expense Type:</label>
-                        <Dropdown placeholder='Expense Type' id="expense_type" fluid multiple selection options={this.options()} onChange={this.onChangeselection} />
+                        <Dropdown deburr={true} allowAdditions={true} placeholder='Expense Type' id="expense_type" fluid multiple selection options={this.options()} onChange={this.onChangeselection} />
                     </Form.Field>
+                    {this.onOtherSelection()}
                     <Button.Group>
-                        <Button negative onClick={this.handleTrigger}>Cancel</Button>
+                        <Button negative type="reset" onclick={this.onResetForm}>Cancel</Button>
                         <Button.Or />
-                        <Button positive type="submit">Submit</Button>
+                        {this.conditionForSubmit() ? <Button positive disabled>Submit</Button> : <Button positive type="submit" >Submit</Button>}
                     </Button.Group>
                 </Form>
             </Segment>
