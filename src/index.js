@@ -10,7 +10,8 @@ import reducer from './reducers'
 
 const initialState = {
     userExists: false,
-    current_user: {}
+    current_user: {},
+    receipts: []
 }
 const store = createStore(reducer, initialState)
 

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Button, Form, Dropdown } from 'semantic-ui-react'
+import { Button, Form, Dropdown, Segment, Icon } from 'semantic-ui-react'
 import { connect } from 'react-redux';
 import axios from 'axios';
 
@@ -35,9 +35,15 @@ export class ReceiptDetailsForm extends Component {
             data: formdata,
             headers: { 'Content-Type': 'multipart/form-data' }
         }).then(res => {
-            if (!!res.user) {
-                this.props.login(res)
-            }
+            this.setState({
+                image: "",
+                store: "",
+                total_amount: 0,
+                generated_on: "",
+                user_id: this.props.current_user.id,
+                expense_type: []
+            })
+            this.props.onSubmitReceiptForm()
         })
     }
     onChangeselection = (e, { value }) => {
@@ -56,7 +62,9 @@ export class ReceiptDetailsForm extends Component {
                 { key: 'Gifts', text: 'Gifts', value: 'Gifts' },
                 { key: 'Health', text: 'Health', value: 'Health' },
                 { key: 'Beauty', text: 'Beauty', value: 'Beauty' },
+                { key: 'Clothes', text: 'Clothes', value: 'Clothes' },
                 { key: 'Restaurants', text: 'Restaurants', value: 'Restaurants' },
+                { key: 'other', text: 'other', value: 'other' },
             ]
         )
     }
@@ -64,23 +72,23 @@ export class ReceiptDetailsForm extends Component {
     render() {
         let { store, total_amount, generated_on } = this.state
         return (
-            <div>
-                <h1>Enter Receipt Details</h1>
+            <Segment>
+                <h2 className="centered"><Icon name='compose' />Enter Receipt Details</h2>
                 <Form onSubmit={(e) => this.handleFormSubmit(e)}>
                     <Form.Field>
-                        <label>Store:</label>
+                        <label><Icon name='map marker' />Store:</label>
                         <input placeholder='Store Name' id="store" value={store} onChange={(e) => this.handleFormInput(e)} required />
                     </Form.Field>
                     <Form.Field>
-                        <label>Total Amount:</label>
+                        <label><Icon name='dollar sign' />Total Amount:</label>
                         <input placeholder='Total Amount' id="total_amount" value={total_amount} onChange={(e) => this.handleFormInput(e)} required />
                     </Form.Field>
                     <Form.Field>
-                        <label>Generated on:</label>
-                        <input placeholder='Date' id="generated_on" value={generated_on} onChange={(e) => this.handleFormInput(e)} required />
+                        <label><Icon name='calendar alternate' />Generated on:</label>
+                        <input placeholder='Date: yyyy-mm-dd' id="generated_on" value={generated_on} onChange={(e) => this.handleFormInput(e)} required />
                     </Form.Field>
                     <Form.Field>
-                        <label>Expense Type:</label>
+                        <label><Icon name='tags' />Expense Type:</label>
                         <Dropdown placeholder='Expense Type' id="expense_type" fluid multiple selection options={this.options()} onChange={this.onChangeselection} />
                     </Form.Field>
                     <Button.Group>
@@ -89,7 +97,7 @@ export class ReceiptDetailsForm extends Component {
                         <Button positive type="submit">Submit</Button>
                     </Button.Group>
                 </Form>
-            </div>
+            </Segment>
         )
     }
 }

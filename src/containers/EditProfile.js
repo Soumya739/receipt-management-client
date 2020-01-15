@@ -1,15 +1,22 @@
 import React, { Component } from 'react'
-import { Button, Checkbox, Form } from 'semantic-ui-react'
+import { Button, Checkbox, Form, Dropdown, Segment } from 'semantic-ui-react'
 import { connect } from 'react-redux';
 import { api } from '../services/api';
 import { editProfile } from '../actions/profile'
 import { logout } from '../actions/login'
+
+const options = [
+    { key: 'm', text: 'Male', value: 'male' },
+    { key: 'f', text: 'Female', value: 'female' },
+    { key: 'o', text: 'Other', value: 'other' },
+]
 
 export class EditProfile extends Component {
     constructor(props) {
         super(props);
         this.state = {
             id: this.props.currentUser.id,
+            gender: this.props.currentUser.gender,
             username: this.props.currentUser.username,
             email: this.props.currentUser.email,
             contact_num: this.props.currentUser.contact_num,
@@ -26,6 +33,10 @@ export class EditProfile extends Component {
         this.setState({ ...this.state, [e.target.id]: e.target.value })
     }
 
+    handleGenderSelection = (e, { value }) => {
+        this.setState({ gender: value })
+    }
+
     handleFormSubmit = (e) => {
         e.preventDefault();
         api.user.UpdateCurrentUser(this.state)
@@ -38,19 +49,18 @@ export class EditProfile extends Component {
                 }
             })
     }
-    handleEditTrigger = () => {
-        this.props.onhandleEditTrigger()
-    }
 
     render() {
-        let { username, email, contact_num, city, country, state, password, password_confirmation } = this.state
+        let { username, email, contact_num, city, country, state, password, password_confirmation, gender } = this.state
         return (
-            <div>
+            <Segment className="centered">
+                Edit Profile
                 <Form onSubmit={(e) => this.handleFormSubmit(e)}>
                     <Form.Field>
                         <label>Username:</label>
                         <input placeholder='Username' id="username" value={username} onChange={(e) => this.handleFormInput(e)} required />
                     </Form.Field>
+                    <Dropdown placeholder='Gender' id="gender" value={gender} selection options={options} onChange={this.handleGenderSelection} />
                     <Form.Field>
                         <label>Email:</label>
                         <input placeholder='name@example.com' id="email" value={email} onChange={(e) => this.handleFormInput(e)} required />
@@ -88,7 +98,7 @@ export class EditProfile extends Component {
                         <Button positive type="submit">Submit</Button>
                     </Button.Group>
                 </Form>
-            </div>
+            </Segment>
         )
     }
 }

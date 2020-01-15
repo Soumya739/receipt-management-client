@@ -9,6 +9,7 @@ import Home from './Home'
 import Timeline from './Timeline'
 import Photo from './Photo'
 import Profile from './Profile'
+// import 'bootstrap/dist/css/bootstrap.min.css';
 
 
 export class App extends Component {
@@ -16,7 +17,7 @@ export class App extends Component {
     localStorage.removeItem('token')
   }
   render() {
-    console.log(this.props.userExists, this.props.current_user)
+    console.log(this.props.userExists, this.props.current_user, this.props.receipts)
     if (this.props.userExists && localStorage.getItem('token')) {
       return (
         <div>
@@ -33,7 +34,6 @@ export class App extends Component {
     } else {
       return (
         <div>
-          <h1>Welcome</h1>
           <Router>
             <WelcomePage />
           </Router>
@@ -46,7 +46,8 @@ export class App extends Component {
 const mapStateToProps = state => {
   return {
     userExists: state.userExists,
-    current_user: state.current_user
+    current_user: state.current_user,
+    receipts: state.receipts
   }
 }
 

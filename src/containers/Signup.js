@@ -1,13 +1,20 @@
 import React, { Component } from 'react'
-import { Button, Modal, Checkbox, Form } from 'semantic-ui-react'
+import { Button, Modal, Checkbox, Form, Dropdown } from 'semantic-ui-react'
 import { connect } from 'react-redux';
 import { api } from '../services/api';
 import { login } from '../actions/login';
+
+const options = [
+    { key: 'm', text: 'Male', value: 'male' },
+    { key: 'f', text: 'Female', value: 'female' },
+    { key: 'o', text: 'Other', value: 'other' },
+]
 
 export class Signup extends Component {
     constructor() {
         super();
         this.state = {
+            gender: "",
             username: "",
             email: "",
             contact_num: "",
@@ -23,6 +30,10 @@ export class Signup extends Component {
         this.setState({ ...this.state, [e.target.id]: e.target.value })
     }
 
+    handleGenderSelection = (e, { value }) => {
+        this.setState({ gender: value })
+    }
+
     handleFormSubmit = (e) => {
         e.preventDefault();
         api.user.CreateUser(this.state)
@@ -32,14 +43,13 @@ export class Signup extends Component {
                 }
             })
     }
-    handleTrigger = () => {
-        // code to trigger 
-    }
+
     render() {
+        let { dimmer, open, close, size } = this.props
         let { username, email, contact_num, city, country, state, password, password_confirmation } = this.state
         return (
             <div>
-                <Modal trigger={<Button>Signup</Button>}>
+                <Modal size={size} dimmer={dimmer} open={open} onClose={this.close}>
                     <Modal.Header>Signup</Modal.Header>
                     <Modal.Content image>
                         <Modal.Description>
@@ -56,6 +66,7 @@ export class Signup extends Component {
                                     <label>Phone Number:</label>
                                     <input placeholder='(xxx)-xxx-xxxx' id="contact_num" value={contact_num} onChange={(e) => this.handleFormInput(e)} required />
                                 </Form.Field>
+                                <Dropdown placeholder='Gender' id="gender" selection options={options} onChange={this.handleGenderSelection} />
                                 <Form.Field>
                                     <label>Country:</label>
                                     <input placeholder='Country' id="country" value={country} onChange={(e) => this.handleFormInput(e)} required />
@@ -80,7 +91,7 @@ export class Signup extends Component {
                                     <Checkbox label='I agree to the Terms and Conditions' />
                                 </Form.Field>
                                 <Button.Group>
-                                    <Button negative onClick={this.handleTrigger}>Cancel</Button>
+                                    <Button negative onClick={close}>Cancel</Button>
                                     <Button.Or />
                                     <Button positive type="submit">Signup</Button>
                                 </Button.Group>

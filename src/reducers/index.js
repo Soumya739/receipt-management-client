@@ -6,19 +6,26 @@ const reducer = (state, action) => {
             return {
                 ...state,
                 userExists: true,
-                current_user: action.payload.user
+                current_user: action.payload.user,
+                gender: action.payload.user
             }
         case "LOGOUT":
             localStorage.removeItem("token")
             return {
                 ...state,
                 userExists: false,
-                current_user: {}
+                current_user: {},
+                gender: ""
             }
         case "EDIT_PROFILE":
             return {
                 ...state,
-                current_user: action.payload
+                current_user: action.payload,
+            }
+        case "EDIT_RECEIPTS":
+            return {
+                ...state,
+                receipts: action.payload
             }
         default:
             return state

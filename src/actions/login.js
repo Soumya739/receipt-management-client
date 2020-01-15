@@ -1,5 +1,4 @@
 export const login = (data) => {
-    console.log("in login action")
     return {
         type: "LOGIN",
         payload: data

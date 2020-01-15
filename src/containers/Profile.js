@@ -2,6 +2,10 @@ import React, { Component } from 'react';
 import { Button } from 'semantic-ui-react'
 import { connect } from 'react-redux';
 import EditProfile from './EditProfile'
+import { Card, Icon, Image, Segment } from 'semantic-ui-react'
+import girl from '../images/girl.jpg'
+
+const boy = 'https://react.semantic-ui.com/images/avatar/large/matthew.png'
 
 export class Profile extends Component {
     constructor() {
@@ -16,21 +20,31 @@ export class Profile extends Component {
     }
 
     render() {
-        // console.log(this.props.current_user)
-        let { username, email, city, country, contact_num, state } = this.props.current_user
+        let { username, email, city, country, contact_num, state, gender } = this.props.current_user
         if (this.state.editTrigger) {
             return <EditProfile currentUser={this.props.current_user} onhandleEditTrigger={this.handleEditTrigger} />
         } else {
             return (
-                <div>
-                    <h1>Username: {username}</h1>
-                    <h2>Email: {email}</h2>
-                    <h2>Phone: {contact_num}</h2>
-                    <h2>City:{city}</h2>
-                    <h2>State:{state}</h2>
-                    <h2>Country:{country}</h2>
-                    <Button onClick={this.handleEditTrigger}>Edit Profile</Button>
-                </div>
+                <Segment className="centered">
+                    <Card>
+                        <Image src={gender === 'female' ? girl : boy} wrapped ui={false} />
+                        <Card.Content>
+                            <Card.Header><Icon name='user' />{username}</Card.Header>
+                            <Card.Description>
+                                <h5><Icon name='mail' />{email}</h5>
+                                <h5><Icon name='phone square' />{contact_num}</h5>
+                            </Card.Description>
+                            <Card.Meta>
+                                <h6><Icon name='point' />{city}</h6>
+                                <h6><Icon name='point' />{state}</h6>
+                                <h6><Icon name='point' />{country}</h6>
+                            </Card.Meta>
+                        </Card.Content>
+                        <Card.Content extra>
+                            <Button onClick={this.handleEditTrigger}><Icon name='edit' />Edit Profile</Button>
+                        </Card.Content>
+                    </Card>
+                </Segment>
             )
         }
     }

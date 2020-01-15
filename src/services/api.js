@@ -17,6 +17,7 @@ const Login = (data, password = {}) => {
                 return res
             } else {
                 alert(res.error)
+                return res.error
             }
         })
 };
@@ -34,6 +35,7 @@ const CreateUser = (data) => {
                 username: data.username,
                 email: data.email,
                 contact_num: data.contact_num,
+                gender: data.gender,
                 city: data.city,
                 country: data.country,
                 state: data.state,
@@ -59,6 +61,7 @@ const UpdateCurrentUser = (userDetails) => {
             user: {
                 username: userDetails.username,
                 email: userDetails.email,
+                gender: userDetails.gender,
                 contact_num: userDetails.contact_num,
                 city: userDetails.city,
                 country: userDetails.country,
