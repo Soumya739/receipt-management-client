@@ -3,6 +3,7 @@ import { Button, Modal, Form } from 'semantic-ui-react'
 import { api } from '../services/api'
 import { connect } from 'react-redux';
 import { login } from '../actions/login';
+import { editReceipts } from '../actions/receipts';
 import { Redirect } from 'react-router-dom';
 
 export class Login extends Component {
@@ -29,6 +30,12 @@ export class Login extends Component {
                         return <Redirect to="/" />
                     } else if (!!res.user) {
                         this.props.login(res)
+                        console.log("user_id", res.user.id)
+                        api.receipt.GetUserReceipts(res.user.id)
+                            .then(receipts => {
+                                console.log("getting receipts", receipts)
+                                this.props.editReceipts(receipts)
+                            })
                     }
                 })
         }
@@ -69,6 +76,7 @@ export class Login extends Component {
 const mapDispatchToProps = dispatch => {
     return {
         login: (user) => dispatch(login(user)),
+        editReceipts: (receipts) => dispatch(editReceipts(receipts)),
     }
 }
 
