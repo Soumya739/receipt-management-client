@@ -13,9 +13,9 @@ import Profile from './Profile'
 
 
 export class App extends Component {
-  // componentDidMount() {
-  //   localStorage.removeItem('token')
-  // }
+  componentDidMount() {
+    localStorage.removeItem('token')
+  }
   render() {
     console.log(this.props.userExists, this.props.current_user, this.props.receipts)
     if (this.props.userExists && localStorage.getItem('token')) {

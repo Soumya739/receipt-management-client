@@ -43,7 +43,7 @@ export class EditProfile extends Component {
             .then(res => {
                 if (!!res.user) {
                     this.props.editProfile(res.user)
-                    this.handleEditTrigger()
+                    this.props.onhandleEditTrigger()
                 } else {
                     this.props.logout()
                 }
@@ -93,7 +93,7 @@ export class EditProfile extends Component {
                         <Checkbox label='I agree to the Terms and Conditions' />
                     </Form.Field>
                     <Button.Group>
-                        <Button negative onClick={this.handleEditTrigger}>Cancel</Button>
+                        <Button negative onClick={() => this.props.onhandleEditTrigger()}>Cancel</Button>
                         <Button.Or />
                         <Button positive type="submit">Submit</Button>
                     </Button.Group>

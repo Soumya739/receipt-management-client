@@ -3,6 +3,8 @@ import { Button, Form, Dropdown, Segment, Icon } from 'semantic-ui-react'
 import { connect } from 'react-redux';
 import axios from 'axios';
 import AddTextField from './AddTextField'
+import moment from 'moment'
+import { api } from "../services/api"
 
 export class ReceiptDetailsForm extends Component {
     constructor(props) {
@@ -115,8 +117,26 @@ export class ReceiptDetailsForm extends Component {
         )
     }
 
+    // options = () => {
+    //     // let arr1 = []
+    //     api.expenseType.getAllExpenseType()
+    //         .then(resp => {
+    //             let arr = []
+    //             resp.forEach(r => arr.push(r.category))
+    //             console.log(arr)
+    //             return arr
+    //         }).then(arr => {
+    //             let newArray = arr.map(aa => ({ "key": aa, "text": aa, "value": aa }))
+    //             console.log("arr1", newArray)
+    //         })
+
+    // }
+
+
+
     render() {
         let { store, total_amount, generated_on } = this.state
+        let maxDate = moment().format("YYYY-MM-DD")
         return (
             <Segment>
                 <h2 className="centered"><Icon name='compose' />Enter Receipt Details</h2>
@@ -131,7 +151,7 @@ export class ReceiptDetailsForm extends Component {
                     </Form.Field>
                     <Form.Field>
                         <label><Icon name='calendar alternate' />Generated on:</label>
-                        <input type="date" placeholder='Date: mm/dd/yyyy' id="generated_on" value={generated_on} onChange={(e) => this.handleFormInput(e)} required />
+                        <input type="date" max={maxDate} placeholder='Date: mm/dd/yyyy' id="generated_on" value={generated_on} onChange={(e) => this.handleFormInput(e)} required />
                     </Form.Field>
                     <Form.Field>
                         <label><Icon name='tags' />Expense Type:</label>
