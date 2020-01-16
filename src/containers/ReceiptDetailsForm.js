@@ -15,31 +15,43 @@ export class ReceiptDetailsForm extends Component {
             total_amount: 0,
             generated_on: "",
             user_id: this.props.current_user.id,
-            expense_type: []
+            expense_type: [],
+            options: []
         }
+    }
+
+    componentDidMount() {
+        return api.expenseType.getAllExpenseType()
+            .then(resp => {
+                let newArray = resp.map(aa => ({ "key": aa.category, "text": aa.category, "value": aa.category }))
+                newArray.push({ "key": "other", "text": "other", "value": "other" })
+                return newArray
+            })
+            .then((newArray) => {
+                this.setState({ options: newArray })
+            })
+    }
+
+    onAdditionToExpenseType = (array) => {
+        array.map((tag) => this.setState({ expense_type: [...this.state.expense_type, tag] }))
     }
 
     handleFormInput = (e) => {
         this.setState({ ...this.state, [e.target.id]: e.target.value, image: this.props.image })
     }
 
-    onAdditionToExpenseType = (array) => {
-        array.map((tag) => {
-            console.log(tag)
-            this.setState({ expense_type: [...this.state.expense_type, tag] })
-        })
+    onChangeselection = (e, { value }) => {
+        this.setState({ ...this.state, expense_type: value })
     }
-    conditionForSubmit = () => {
-        let { image, store, total_amount, generated_on, user_id, expense_type } = this.state
-        return (
-            image === "" ||
-            store === "" ||
-            total_amount === 0 ||
-            generated_on === "" ||
-            user_id === "" ||
-            expense_type.length === 0
-        )
+
+    onOtherSelection = () => {
+        if (this.state.expense_type.includes("other")) {
+            return (
+                <AddTextField onAdditionToExpenseType={this.onAdditionToExpenseType} />
+            )
+        }
     }
+
     onResetForm = () => {
         this.setState({
             image: "",
@@ -47,7 +59,8 @@ export class ReceiptDetailsForm extends Component {
             total_amount: 0,
             generated_on: "",
             user_id: this.props.current_user.id,
-            expense_type: []
+            expense_type: [],
+            options: []
         })
     }
 
@@ -86,53 +99,18 @@ export class ReceiptDetailsForm extends Component {
             this.props.onSubmitReceiptForm()
         })
     }
-    onChangeselection = (e, { value }) => {
-        this.setState({ ...this.state, expense_type: value })
-    }
-    onOtherSelection = () => {
-        if (this.state.expense_type.includes("other")) {
-            return (
-                <AddTextField onAdditionToExpenseType={this.onAdditionToExpenseType} />
-            )
-        }
-    }
 
-
-    options = () => {
+    conditionForSubmit = () => {
+        let { image, store, total_amount, generated_on, user_id, expense_type } = this.state
         return (
-            [
-                { key: 'food', text: 'food', value: 'food' },
-                { key: 'pharmacy', text: 'pharmacy', value: 'pharmacy' },
-                { key: 'furniture', text: 'furniture', value: 'furniture' },
-                { key: 'Automotive', text: 'Automotive', value: 'Automotive' },
-                { key: 'Electronics', text: 'Electronics', value: 'Electronics' },
-                { key: 'Entertainment', text: 'Entertainment', value: 'Entertainment' },
-                { key: 'Gifts', text: 'Gifts', value: 'Gifts' },
-                { key: 'Health', text: 'Health', value: 'Health' },
-                { key: 'Beauty', text: 'Beauty', value: 'Beauty' },
-                { key: 'Clothes', text: 'Clothes', value: 'Clothes' },
-                { key: 'Restaurants', text: 'Restaurants', value: 'Restaurants' },
-                { key: 'other', text: 'other', value: 'other' },
-            ]
+            image === "" ||
+            store === "" ||
+            total_amount === 0 ||
+            generated_on === "" ||
+            user_id === "" ||
+            expense_type.length === 0
         )
     }
-
-    // options = () => {
-    //     // let arr1 = []
-    //     api.expenseType.getAllExpenseType()
-    //         .then(resp => {
-    //             let arr = []
-    //             resp.forEach(r => arr.push(r.category))
-    //             console.log(arr)
-    //             return arr
-    //         }).then(arr => {
-    //             let newArray = arr.map(aa => ({ "key": aa, "text": aa, "value": aa }))
-    //             console.log("arr1", newArray)
-    //         })
-
-    // }
-
-
 
     render() {
         let { store, total_amount, generated_on } = this.state
@@ -155,11 +133,11 @@ export class ReceiptDetailsForm extends Component {
                     </Form.Field>
                     <Form.Field>
                         <label><Icon name='tags' />Expense Type:</label>
-                        <Dropdown deburr={true} allowAdditions={true} placeholder='Expense Type' id="expense_type" fluid multiple selection options={this.options()} onChange={this.onChangeselection} />
+                        <Dropdown placeholder='Expense Type' id="expense_type" fluid multiple selection options={this.state.options} onChange={this.onChangeselection} value={this.state.expense_type} />
                     </Form.Field>
                     {this.onOtherSelection()}
                     <Button.Group>
-                        <Button negative type="reset" onclick={this.onResetForm}>Cancel</Button>
+                        <Button negative type="reset" onClick={this.onResetForm}>Cancel</Button>
                         <Button.Or />
                         {this.conditionForSubmit() ? <Button positive disabled>Submit</Button> : <Button positive type="submit" >Submit</Button>}
                     </Button.Group>

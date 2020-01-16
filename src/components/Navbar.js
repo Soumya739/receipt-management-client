@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { NavLink } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { connect } from 'react-redux';
 import { logout } from '../actions/login';
 import { Menu, Icon } from 'semantic-ui-react'
@@ -18,41 +18,44 @@ class Navbar extends Component {
     render() {
         const { activeItem } = this.state
         return (
-
             <Menu.Menu >
                 <Menu pointing icon='labeled'>
-                    <NavLink to="/home"><Menu.Item
+                    <Menu.Item
+                        as={Link} to='/home'
                         name='Home'
                         active={activeItem === 'Home'}
                         onClick={this.handleItemClick}
                     >
                         <Icon name='home' />
                         Home
-                    </Menu.Item></NavLink>
-                    <NavLink to="/photos"><Menu.Item
+                    </Menu.Item>
+                    <Menu.Item
+                        as={Link} to='/photos'
                         name='Photos'
                         active={activeItem === 'Photos'}
                         onClick={this.handleItemClick}
                     >
                         <Icon name='images' />
                         Photos
-                    </Menu.Item></NavLink>
-                    <NavLink to="/timeline"><Menu.Item
+                    </Menu.Item>
+                    <Menu.Item
+                        as={Link} to='/timeline'
                         name='Timeline'
                         active={activeItem === 'Timeline'}
                         onClick={this.handleItemClick}
                     >
                         <Icon name='history' />
                         Timeline
-                    </Menu.Item></NavLink>
-                    <NavLink to="/profile"><Menu.Item
+                    </Menu.Item>
+                    <Menu.Item
+                        as={Link} to='/profile'
                         name='Profile'
                         active={activeItem === 'Profile'}
                         onClick={this.handleItemClick}
                     >
                         <Icon name='user' />
                         Profile
-                    </Menu.Item></NavLink>
+                    </Menu.Item>
                     <Menu.Item
                         name='Logout'
                         active={activeItem === 'Logout'}
@@ -63,7 +66,6 @@ class Navbar extends Component {
                     </Menu.Item>
                 </Menu>
             </Menu.Menu>
-
         )
     }
 }

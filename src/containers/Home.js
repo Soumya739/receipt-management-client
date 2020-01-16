@@ -16,8 +16,8 @@ export class Home extends Component {
     onImageUpload = (data) => {
         this.setState({ image: data })
     }
-    onSubmitReceiptForm = (data) => {
-        this.setState({ receiptFormSubmitted: true })
+    onSubmitReceiptForm = () => {
+        this.setState({ receiptFormSubmitted: !this.state.receiptFormSubmitted })
     }
 
 
@@ -26,7 +26,7 @@ export class Home extends Component {
 
             <div>
                 <Segment>
-                    <UploadReceipt onImageUpload={this.onImageUpload} receiptFormSubmitted={this.state.receiptFormSubmitted} />
+                    <UploadReceipt onImageUpload={this.onImageUpload} onSubmitReceiptForm={this.onSubmitReceiptForm} receiptFormSubmitted={this.state.receiptFormSubmitted} />
                     <Divider horizontal>And</Divider>
                     <ReceiptDetailsForm image={this.state.image} onSubmitReceiptForm={this.onSubmitReceiptForm} />
                 </Segment>

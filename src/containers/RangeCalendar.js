@@ -5,6 +5,7 @@ import 'react-dates/lib/css/_datepicker.css'
 import { DateRangePicker } from 'react-dates'
 import '../App.css'
 import moment from 'moment'
+import { Button } from 'semantic-ui-react'
 
 export class RangeCalendar extends Component {
     constructor(props) {
@@ -15,22 +16,26 @@ export class RangeCalendar extends Component {
         }
     }
 
-    render() {
+    onDateSelection = () => {
         if (this.state.startDate && this.state.endDate) {
             console.log(this.state.startDate.format("YYYY-MM-DD"), this.state.endDate.format("YYYY-MM-DD"))
         }
+    }
+
+    render() {
         return (
             <div>
                 <DateRangePicker
                     isOutsideRange={day => day.isAfter(moment())}
-                    startDate={this.state.startDate} // momentPropTypes.momentObj or null,
-                    startDateId="your_unique_start_date_id" // PropTypes.string.isRequired,
-                    endDate={this.state.endDate} // momentPropTypes.momentObj or null,
-                    endDateId="your_unique_end_date_id" // PropTypes.string.isRequired,
-                    onDatesChange={({ startDate, endDate }) => this.setState({ startDate, endDate })} // PropTypes.func.isRequired,
-                    focusedInput={this.state.focusedInput} // PropTypes.oneOf([START_DATE, END_DATE]) or null,
-                    onFocusChange={focusedInput => this.setState({ focusedInput })} // PropTypes.func.isRequired,
+                    startDate={this.state.startDate}
+                    startDateId="your_unique_start_date_id"
+                    endDate={this.state.endDate}
+                    endDateId="your_unique_end_date_id"
+                    onDatesChange={({ startDate, endDate }) => this.setState({ startDate, endDate })}
+                    focusedInput={this.state.focusedInput}
+                    onFocusChange={focusedInput => this.setState({ focusedInput })}
                 />
+                <Button onClick={this.onDateSelection}>Get Data</Button>
             </div>
         )
     }

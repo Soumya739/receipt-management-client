@@ -1,5 +1,4 @@
 const reducer = (state, action) => {
-    console.log("in reducer", "action.payload", action.payload)
     switch (action.type) {
         case "LOGIN":
             localStorage.setItem('token', action.payload.jwt);

@@ -30,10 +30,8 @@ export class Login extends Component {
                         return <Redirect to="/" />
                     } else if (!!res.user) {
                         this.props.login(res)
-                        console.log("user_id", res.user.id)
                         api.receipt.GetUserReceipts(res.user.id)
                             .then(receipts => {
-                                console.log("getting receipts", receipts)
                                 this.props.editReceipts(receipts)
                             })
                     }

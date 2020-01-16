@@ -2,18 +2,26 @@ import React, { Component } from 'react';
 import { Table, Icon } from 'semantic-ui-react'
 import TableExpenseRow from '../components/TableExpenseRow'
 import { connect } from 'react-redux';
+// import { api } from '../services/api'
 
 class ExpenditureLog extends Component {
     constructor() {
         super()
         this.state = {
-            filterType: ""
+            filterType: "",
         }
     }
+
+    // componentDidMount() {
+    //     // api.receipt.GetUserReceipts()
+    // }
 
     showReceiptData = () => {
         return this.props.receipts.map(receipt => <TableExpenseRow receipt={receipt} key={receipt.id} />)
     }
+
+
+
     render() {
         return (
             <Table color="orange">
