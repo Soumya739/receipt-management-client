@@ -3,7 +3,6 @@ import { Button, Modal, Form } from 'semantic-ui-react'
 import { api } from '../services/api'
 import { connect } from 'react-redux';
 import { login } from '../actions/login';
-import { Redirect } from 'react-router-dom';
 
 export class Login extends Component {
     constructor() {
@@ -25,10 +24,11 @@ export class Login extends Component {
         if (email !== "" && password !== "") {
             api.auth.Login(this.state.fields)
                 .then(res => {
-                    if (!!res.error) {
-                        return <Redirect to="/" />
-                    } else if (!!res.user) {
+                    if (!!res.user) {
                         this.props.login(res)
+                        window.location.reload(true);
+                    } else {
+                        window.location.reload(true);
                     }
                 })
         }
@@ -38,7 +38,6 @@ export class Login extends Component {
         let { open, close, size } = this.props
         let { email } = this.state.fields
         return (
-
             <Modal centered={true} size={size} open={open} onClose={this.close}>
                 <Modal.Header>Login</Modal.Header>
                 <Modal.Content >

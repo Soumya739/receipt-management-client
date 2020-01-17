@@ -1,7 +1,9 @@
 import React, { Component } from 'react'
 import Dropzone from 'react-dropzone';
-import { Button, Icon } from 'semantic-ui-react'
+import { Button, Icon, Form } from 'semantic-ui-react'
 import '../App.css'
+import axios from 'axios';
+
 
 
 export class UploadReceipt extends Component {
@@ -14,7 +16,27 @@ export class UploadReceipt extends Component {
 
     onDrop = (acceptedFiles) => {
         this.setState({ image: acceptedFiles[0] })
-        this.props.onImageUpload(this.state.image)
+
+    }
+
+    handleSubmitImage = (e) => {
+        e.preventDefault()
+        const formdata = new FormData(e.target)
+        formdata.append('image', this.state.image)
+        axios({
+            method: 'post',
+            url: 'http://localhost:3000/receipts',
+            data: formdata,
+            headers: {
+                'Content-Type': 'multipart/form-data',
+                Accepts: 'application/json',
+                Authorization: localStorage.getItem('token')
+            }
+        }).then(res => {
+            console.log(res)
+            this.setState({ image: "" })
+            this.props.onImageUpload(res.data.image.url)
+        })
     }
 
     render() {
@@ -43,6 +65,11 @@ export class UploadReceipt extends Component {
                         </div>
                     )}
                 </Dropzone>
+                <Form onSubmit={(e) => this.handleSubmitImage(e)}>
+                    <Button.Group>
+                        {this.state.image === "" ? <Button negative disabled>Submit Image</Button> : <Button positive type="submit">Submit Image</Button>}
+                    </Button.Group>
+                </Form>
             </div>
         );
     }

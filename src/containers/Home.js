@@ -9,12 +9,13 @@ export class Home extends Component {
         super();
         this.state = {
             image: "",
-            receiptFormSubmitted: false
+            receiptFormSubmitted: false,
+            receiptId: ""
         };
     }
 
-    onImageUpload = (data) => {
-        this.setState({ image: data })
+    onImageUpload = (imageUrl, receiptId) => {
+        this.setState({ image: imageUrl, receiptId: receiptId })
     }
     onSubmitReceiptForm = () => {
         this.setState({ receiptFormSubmitted: !this.state.receiptFormSubmitted })

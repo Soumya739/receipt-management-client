@@ -7,7 +7,10 @@ const TableExpenseRow = (props) => {
             <Table.Cell>{props.receipt.store}</Table.Cell>
             <Table.Cell>{props.receipt.total_amount}</Table.Cell>
             <Table.Cell>{props.receipt.generated_on}</Table.Cell>
-            <Table.Cell>{props.receipt.expense_type.map((tag, index) => <li key={index}>{tag}</li>)}</Table.Cell>
+            {props.receipt.expense_type ?
+                <Table.Cell>{props.receipt.expense_type.map((tag, index) => <li key={index}>{tag}</li>)}</Table.Cell>
+                : null
+            }
         </Table.Row>
     )
 }

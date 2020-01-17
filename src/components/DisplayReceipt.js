@@ -20,9 +20,13 @@ const DisplayReceipt = (props) => {
                         <p><Icon name='calendar alternate' />Generated on: {props.receipt.generated_on}</p>
                         <p><Icon name='calendar alternate' />Total Amount: {props.receipt.total_amount}</p>
                         <p> Tags:</p>
-                        <ul>
-                            {props.receipt.expense_type.map((tag, index) => <li key={index}>{tag}</li>)}
-                        </ul>
+                        {props.receipt.expense_type ?
+                            <ul>
+                                {props.receipt.expense_type.map((tag, index) => <li key={index}>{tag}</li>)}
+                            </ul>
+                            : null
+                        }
+
 
                     </Card.Description>
                 </Card.Content>
