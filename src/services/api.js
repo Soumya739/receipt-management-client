@@ -22,6 +22,18 @@ const Login = (data, password = {}) => {
         })
 };
 
+const getCurrentUser = () => {
+    return fetch(Base_URL + "/current_user", {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            Accepts: 'application/json',
+            Authorization: localStorage.getItem('token')
+        }
+    })
+        .then(resp => resp.json())
+}
+
 const CreateUser = (data) => {
     return fetch(Base_URL + '/users', {
         method: "POST",
@@ -76,8 +88,24 @@ const UpdateCurrentUser = (userDetails) => {
         .then((user) => Login(user, { password: userDetails.password }))
 }
 
-const GetUserReceipts = (userID) => {
+const GetUserReceipts = () => {
     return fetch(Base_URL + "/user_receipts", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            Accepts: 'application/json',
+            Authorization: localStorage.getItem('token')
+        }
+    }).then(resp => resp.json())
+}
+
+const getAllExpenseType = () => {
+    return fetch(Base_URL + "/expense_types")
+        .then(resp => resp.json())
+}
+
+const getReceiptsDataBasedOnExpenseType = (expenseType) => {
+    return fetch(Base_URL + "/filtered_receipts", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -85,14 +113,20 @@ const GetUserReceipts = (userID) => {
             Authorization: localStorage.getItem('token')
         },
         body: JSON.stringify({
-            user_id: userID
+            category: expenseType
         })
     }).then(resp => resp.json())
 }
 
-const getAllExpenseType = () => {
-    return fetch(Base_URL + "/expense_types")
-        .then(resp => resp.json())
+const getAllStoresFromUserReceipts = () => {
+    return fetch(Base_URL + "/stores", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            Accepts: 'application/json',
+            Authorization: localStorage.getItem('token')
+        }
+    }).then(resp => resp.json())
 }
 
 
@@ -103,11 +137,14 @@ export const api = {
     user: {
         CreateUser,
         UpdateCurrentUser,
+        getCurrentUser,
     },
     receipt: {
         GetUserReceipts,
+        getAllStoresFromUserReceipts,
     },
     expenseType: {
-        getAllExpenseType
+        getAllExpenseType,
+        getReceiptsDataBasedOnExpenseType
     }
 };

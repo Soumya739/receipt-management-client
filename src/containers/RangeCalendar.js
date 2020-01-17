@@ -18,7 +18,7 @@ export class RangeCalendar extends Component {
 
     onDateSelection = () => {
         if (this.state.startDate && this.state.endDate) {
-            console.log(this.state.startDate.format("YYYY-MM-DD"), this.state.endDate.format("YYYY-MM-DD"))
+            this.props.onGetSummaryDataWithinRange(this.state.startDate.format("YYYY-MM-DD"), this.state.endDate.format("YYYY-MM-DD"))
         }
     }
 

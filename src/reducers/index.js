@@ -11,10 +11,7 @@ const reducer = (state, action) => {
         case "LOGOUT":
             localStorage.removeItem("token")
             return {
-                ...state,
-                userExists: false,
-                current_user: {},
-                gender: ""
+                state
             }
         case "EDIT_PROFILE":
             return {

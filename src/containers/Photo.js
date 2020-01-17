@@ -5,7 +5,7 @@ import { api } from '../services/api';
 import { Segment } from 'semantic-ui-react'
 import { Button, Icon } from 'semantic-ui-react'
 import { Card } from 'semantic-ui-react'
-import { editReceipts } from '../actions/receipts';
+// import { editReceipts } from '../actions/receipts';
 
 
 export class Photo extends Component {
@@ -17,11 +17,10 @@ export class Photo extends Component {
     }
 
     handleGetReceipts = () => {
-        api.receipt.GetUserReceipts(this.props.current_user.id)
+        api.receipt.GetUserReceipts()
             .then(receipts => {
-                console.log("in photos", receipts)
                 this.setState({ receipts: receipts })
-                this.props.editReceipts(receipts)
+                // this.props.editReceipts(receipts)
             })
     }
 
@@ -52,11 +51,11 @@ const mapStateToProps = state => {
     }
 }
 
-const mapDispatchToProps = dispatch => {
-    return {
-        editReceipts: (receipts) => dispatch(editReceipts(receipts)),
-    }
-}
+// const mapDispatchToProps = dispatch => {
+//     return {
+//         editReceipts: (receipts) => dispatch(editReceipts(receipts)),
+//     }
+// }
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(Photo)
+export default connect(mapStateToProps, null)(Photo)

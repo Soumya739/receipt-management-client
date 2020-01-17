@@ -14,7 +14,6 @@ export class ReceiptDetailsForm extends Component {
             store: "",
             total_amount: 0,
             generated_on: "",
-            user_id: this.props.current_user.id,
             expense_type: [],
             options: []
         }
@@ -58,7 +57,6 @@ export class ReceiptDetailsForm extends Component {
             store: "",
             total_amount: 0,
             generated_on: "",
-            user_id: this.props.current_user.id,
             expense_type: [],
             options: []
         })
@@ -80,20 +78,22 @@ export class ReceiptDetailsForm extends Component {
         formdata.append('store', this.state.store)
         formdata.append('total_amount', this.state.total_amount)
         formdata.append('generated_on', this.state.generated_on)
-        formdata.append('user_id', this.state.user_id)
         formdata.append('expense_type', this.state.expense_type)
         axios({
             method: 'post',
             url: 'http://localhost:3000/receipts',
             data: formdata,
-            headers: { 'Content-Type': 'multipart/form-data' }
+            headers: {
+                'Content-Type': 'multipart/form-data',
+                Accepts: 'application/json',
+                Authorization: localStorage.getItem('token')
+            }
         }).then(res => {
             this.setState({
                 image: "",
                 store: "",
                 total_amount: 0,
                 generated_on: "",
-                user_id: this.props.current_user.id,
                 expense_type: []
             })
             this.props.onSubmitReceiptForm()
@@ -147,10 +147,10 @@ export class ReceiptDetailsForm extends Component {
     }
 }
 
-const mapStateToProps = state => {
-    return {
-        current_user: state.current_user,
-    }
-}
+// const mapStateToProps = state => {
+//     return {
+//         current_user: state.current_user,
+//     }
+// }
 
-export default connect(mapStateToProps, null)(ReceiptDetailsForm)
+export default connect(null, null)(ReceiptDetailsForm)

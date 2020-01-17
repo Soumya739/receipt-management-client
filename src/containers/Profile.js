@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Button } from 'semantic-ui-react'
-import { connect } from 'react-redux';
-import EditProfile from './EditProfile'
+import { NavLink } from 'react-router-dom'
+import { api } from '../services/api'
 import { Card, Icon, Image, Segment } from 'semantic-ui-react'
 import girl from '../images/girl.jpg'
 
@@ -11,8 +11,14 @@ export class Profile extends Component {
     constructor() {
         super();
         this.state = {
-            editTrigger: false
+            editTrigger: false,
+            current_user: {}
         }
+    }
+
+    componentDidMount() {
+        api.user.getCurrentUser()
+            .then(res => this.setState({ current_user: res }))
     }
 
     handleEditTrigger = () => {
@@ -20,40 +26,34 @@ export class Profile extends Component {
     }
 
     render() {
-        let { username, email, city, country, contact_num, state, gender } = this.props.current_user
-        if (this.state.editTrigger) {
-            return <EditProfile currentUser={this.props.current_user} onhandleEditTrigger={this.handleEditTrigger} />
-        } else {
-            return (
-                <Segment className="centered">
-                    <Card>
-                        <Image src={gender === 'female' ? girl : boy} wrapped ui={false} />
-                        <Card.Content>
-                            <Card.Header><Icon name='user' />{username}</Card.Header>
-                            <Card.Description>
-                                <h5><Icon name='mail' />{email}</h5>
-                                <h5><Icon name='phone square' />{contact_num}</h5>
-                            </Card.Description>
-                            <Card.Meta>
-                                <h6><Icon name='point' />{city}</h6>
-                                <h6><Icon name='point' />{state}</h6>
-                                <h6><Icon name='point' />{country}</h6>
-                            </Card.Meta>
-                        </Card.Content>
-                        <Card.Content extra>
-                            <Button onClick={this.handleEditTrigger}><Icon name='edit' />Edit Profile</Button>
-                        </Card.Content>
-                    </Card>
-                </Segment>
-            )
-        }
+        let { username, email, city, country, contact_num, state, gender } = this.state.current_user
+        // if (this.state.editTrigger) {
+        //     return <EditProfile onhandleEditTrigger={this.handleEditTrigger} />
+        // } else {
+        return (
+            <Segment className="centered">
+                <Card>
+                    <Image src={gender === 'female' ? girl : boy} wrapped ui={false} />
+                    <Card.Content>
+                        <Card.Header><Icon name='user' />{username}</Card.Header>
+                        <Card.Description>
+                            <h5><Icon name='mail' />{email}</h5>
+                            <h5><Icon name='phone square' />{contact_num}</h5>
+                        </Card.Description>
+                        <Card.Meta>
+                            <h6><Icon name='point' />{city}</h6>
+                            <h6><Icon name='point' />{state}</h6>
+                            <h6><Icon name='point' />{country}</h6>
+                        </Card.Meta>
+                    </Card.Content>
+                    <Card.Content extra>
+                        <NavLink to='/edit_profile'><Button><Icon name='edit' />Edit Profile</Button></NavLink>
+                    </Card.Content>
+                </Card>
+            </Segment>
+        )
     }
+    // }
 }
 
-const mapStateToProps = state => {
-    return {
-        current_user: state.current_user,
-    }
-}
-
-export default connect(mapStateToProps, null)(Profile)
+export default Profile

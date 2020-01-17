@@ -9,9 +9,6 @@ import { createStore } from 'redux'
 import reducer from './reducers'
 
 const initialState = {
-    userExists: false,
-    current_user: {},
-    receipts: []
 }
 const store = createStore(reducer, initialState)
 
