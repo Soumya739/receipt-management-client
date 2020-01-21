@@ -3,22 +3,33 @@ import ExpenseGraph from './ExpenseGraph'
 import UploadReceipt from './UploadReceipt'
 import ReceiptDetailsForm from './ReceiptDetailsForm'
 import { Segment, Divider, Header, Icon } from 'semantic-ui-react'
+import { api } from '../services/api'
 
 export class Home extends Component {
     constructor() {
         super();
         this.state = {
-            image: "",
+            imageData: [],
             receiptFormSubmitted: false,
-            receiptId: ""
+            receiptId: "",
+            hasImageData: false,
+            graphData: {}
         };
     }
 
-    onImageUpload = (imageUrl, receiptId) => {
-        this.setState({ image: imageUrl, receiptId: receiptId })
+    componentDidMount() {
+        api.receipt.get_amount_per_type()
+            .then(res => {
+                console.log("here", res)
+                this.setState({ graphData: res })
+            })
+    }
+
+    onImageUpload = (imageData, receiptId) => {
+        this.setState({ imageData: imageData, receiptId: receiptId, hasImageData: true })
     }
     onSubmitReceiptForm = () => {
-        this.setState({ receiptFormSubmitted: !this.state.receiptFormSubmitted })
+        this.setState({ receiptFormSubmitted: !this.state.receiptFormSubmitted, hasImageData: false, imageData: [] })
     }
 
 
@@ -28,17 +39,25 @@ export class Home extends Component {
             <div>
                 <Segment>
                     <UploadReceipt onImageUpload={this.onImageUpload} onSubmitReceiptForm={this.onSubmitReceiptForm} receiptFormSubmitted={this.state.receiptFormSubmitted} />
-                    <Divider horizontal>And</Divider>
-                    <ReceiptDetailsForm image={this.state.image} onSubmitReceiptForm={this.onSubmitReceiptForm} />
+
+                    {this.state.imageData.length !== 0 ?
+                        <>
+                            <Divider horizontal>And</Divider>
+                            <ReceiptDetailsForm imageData={this.state.imageData} onSubmitReceiptForm={this.onSubmitReceiptForm} receiptId={this.state.receiptId} />
+                        </>
+                        : null
+                    }
                 </Segment>
                 <Divider horizontal>
                     <Header as='h4'>
                         <Icon name='bar chart' />
-                        Expense Chart
+                        Chart
                     </Header>
                 </Divider>
-                <ExpenseGraph />
-
+                {Object.keys(this.state.graphData).length !== 0 ?
+                    <ExpenseGraph graphData={this.state.graphData} />
+                    : null
+                }
             </div>
         )
     }

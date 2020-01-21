@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { Button, Form, Dropdown, Segment, Icon } from 'semantic-ui-react'
 import { connect } from 'react-redux';
-import axios from 'axios';
 import AddTextField from './AddTextField'
 import moment from 'moment'
 import { api } from "../services/api"
@@ -10,16 +9,18 @@ export class ReceiptDetailsForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            image: "",
+            imageData: [],
             store: "",
             total_amount: 0,
             generated_on: "",
             expense_type: [],
-            options: []
+            options: [],
+            receiptId: "",
         }
     }
 
     componentDidMount() {
+        let amountsAfterTotal = []
         return api.expenseType.getAllExpenseType()
             .then(resp => {
                 let newArray = resp.map(aa => ({ "key": aa.category, "text": aa.category, "value": aa.category }))
@@ -27,7 +28,32 @@ export class ReceiptDetailsForm extends Component {
                 return newArray
             })
             .then((newArray) => {
-                this.setState({ options: newArray })
+                this.setState({
+                    options: newArray,
+                    imageData: this.props.imageData,
+                    store: this.props.imageData[0].text + this.props.imageData[1].text,
+                    receiptId: this.props.receiptId
+                })
+                console.log(this.props.imageData)
+            })
+            .then(() => {
+                // let xx = this.props.imageData.find((data, index) => data.text === "TOTAL")
+                let totalIndex = this.state.imageData.indexOf(this.state.imageData.find((data, index) => data.text === "TOTAL" || data.text === "Total" || data.text === "total"))
+                for (let i = totalIndex; i < this.state.imageData.length; i++) {
+                    if (this.state.imageData[i].text.includes("$")) {
+                        amountsAfterTotal.push(this.state.imageData[i].text)
+                    }
+                }
+                this.setState({
+                    store: this.props.imageData[0].text + this.props.imageData[1].text
+                })
+                return totalIndex
+            })
+            .then(() => {
+                let amounts = amountsAfterTotal.map(amt => amt.replace("$", ""))
+                amounts.sort((a, b) => a - b)
+                this.setState({ total_amount: amounts[amounts.length - 1] })
+
             })
     }
 
@@ -36,7 +62,7 @@ export class ReceiptDetailsForm extends Component {
     }
 
     handleFormInput = (e) => {
-        this.setState({ ...this.state, [e.target.id]: e.target.value, image: this.props.image })
+        this.setState({ ...this.state, [e.target.id]: e.target.value })
     }
 
     onChangeselection = (e, { value }) => {
@@ -53,12 +79,13 @@ export class ReceiptDetailsForm extends Component {
 
     onResetForm = () => {
         this.setState({
-            image: "",
+            imageData: [],
             store: "",
             total_amount: 0,
             generated_on: "",
             expense_type: [],
-            options: []
+            options: [],
+            receiptId: ""
         })
     }
 
@@ -73,37 +100,24 @@ export class ReceiptDetailsForm extends Component {
 
     handleFormSubmit = (e) => {
         e.preventDefault();
-        const formdata = new FormData(e.target)
-        formdata.append('image', this.state.image)
-        formdata.append('store', this.state.store)
-        formdata.append('total_amount', this.state.total_amount)
-        formdata.append('generated_on', this.state.generated_on)
-        formdata.append('expense_type', this.state.expense_type)
-        axios({
-            method: 'post',
-            url: 'http://localhost:3000/receipts',
-            data: formdata,
-            headers: {
-                'Content-Type': 'multipart/form-data',
-                Accepts: 'application/json',
-                Authorization: localStorage.getItem('token')
-            }
-        }).then(res => {
-            this.setState({
-                image: "",
-                store: "",
-                total_amount: 0,
-                generated_on: "",
-                expense_type: []
+        api.receipt.updateReceipt(this.state)
+            .then(res => {
+                this.setState({
+                    imageData: [],
+                    store: "",
+                    total_amount: 0,
+                    generated_on: "",
+                    expense_type: [],
+                    receiptId: ""
+                })
+                this.props.onSubmitReceiptForm()
             })
-            this.props.onSubmitReceiptForm()
-        })
     }
 
     conditionForSubmit = () => {
-        let { image, store, total_amount, generated_on, user_id, expense_type } = this.state
+        let { imageData, store, total_amount, generated_on, user_id, expense_type } = this.state
         return (
-            image === "" ||
+            imageData === [] ||
             store === "" ||
             total_amount === 0 ||
             generated_on === "" ||

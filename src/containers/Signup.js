@@ -40,6 +40,9 @@ export class Signup extends Component {
             .then(res => {
                 if (!!res.user) {
                     this.props.login(res)
+                    window.location.reload(true);
+                } else {
+                    window.location.reload(true);
                 }
             })
     }

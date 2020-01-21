@@ -15,7 +15,7 @@ export class AddTextField extends Component {
     }
 
     handleAddExpenseType = () => {
-        if (this.state.tag !== "") {
+        if (this.state.tag !== "" && this.state.expense_type.includes(this.state.tag) === false) {
             this.setState({ expense_type: [...this.state.expense_type, this.state.tag], tag: "" }, () => this.props.onAdditionToExpenseType(this.state.expense_type))
         }
     }
@@ -28,8 +28,8 @@ export class AddTextField extends Component {
                     <label><Icon name='tags' />Add Expense Type:</label>
                     {expense_type.length !== 0 ? <p>Added: {expense_type.map((tag, index) => <li key={index}>{tag}</li>)}</p> : null}
                     <input placeholder='Expense Type' id="expense_type" onChange={(e) => this.handleFormInput(e)} value={this.state.tag} />
+                    <Button positive type="reset" onClick={this.handleAddExpenseType}>Add</Button>
                 </Form.Field>
-                <Button positive type="reset" onClick={this.handleAddExpenseType}>Add</Button>
             </>
         )
     }
