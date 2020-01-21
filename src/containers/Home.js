@@ -8,17 +8,18 @@ export class Home extends Component {
     constructor() {
         super();
         this.state = {
-            image: "",
+            imageData: [],
             receiptFormSubmitted: false,
-            receiptId: ""
+            receiptId: "",
+            hasImageData: false
         };
     }
 
-    onImageUpload = (imageUrl, receiptId) => {
-        this.setState({ image: imageUrl, receiptId: receiptId })
+    onImageUpload = (imageData, receiptId) => {
+        this.setState({ imageData: imageData, receiptId: receiptId, hasImageData: true })
     }
     onSubmitReceiptForm = () => {
-        this.setState({ receiptFormSubmitted: !this.state.receiptFormSubmitted })
+        this.setState({ receiptFormSubmitted: !this.state.receiptFormSubmitted, hasImageData: false, imageData: [] })
     }
 
 
@@ -29,7 +30,10 @@ export class Home extends Component {
                 <Segment>
                     <UploadReceipt onImageUpload={this.onImageUpload} onSubmitReceiptForm={this.onSubmitReceiptForm} receiptFormSubmitted={this.state.receiptFormSubmitted} />
                     <Divider horizontal>And</Divider>
-                    <ReceiptDetailsForm image={this.state.image} onSubmitReceiptForm={this.onSubmitReceiptForm} />
+                    {this.state.imageData.length !== 0 ?
+                        <ReceiptDetailsForm imageData={this.state.imageData} onSubmitReceiptForm={this.onSubmitReceiptForm} receiptId={this.state.receiptId} />
+                        : null
+                    }
                 </Segment>
                 <Divider horizontal>
                     <Header as='h4'>

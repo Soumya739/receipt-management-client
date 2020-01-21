@@ -129,6 +129,25 @@ const getAllStoresFromUserReceipts = () => {
     }).then(resp => resp.json())
 }
 
+const updateReceipt = (data) => {
+    return fetch(Base_URL + `/receipts/${data.receiptId}`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+            Accepts: 'application/json',
+            Authorization: localStorage.getItem('token')
+        },
+        body: JSON.stringify({
+            store: data.store,
+            total_amount: data.total_amount,
+            generated_on: data.generated_on,
+            expense_type: data.expense_type,
+            receipt_id: data.receiptId
+        })
+    })
+        .then(resp => resp.json())
+}
+
 
 export const api = {
     auth: {
@@ -142,6 +161,7 @@ export const api = {
     receipt: {
         GetUserReceipts,
         getAllStoresFromUserReceipts,
+        updateReceipt,
     },
     expenseType: {
         getAllExpenseType,

@@ -33,9 +33,16 @@ export class UploadReceipt extends Component {
                 Authorization: localStorage.getItem('token')
             }
         }).then(res => {
-            console.log(res)
-            this.setState({ image: "" })
-            this.props.onImageUpload(res.data.image.url)
+            console.log("here we go:", JSON.parse(res.data.imageData))
+            console.log(res.data.receiptId)
+            let response = JSON.parse(res.data.imageData)
+            if (response.status === "Running") {
+                console.log(res)
+            } else {
+                console.log(response.recognitionResults[0].lines)
+                this.setState({ image: "" })
+                this.props.onImageUpload(response.recognitionResults[0].lines, res.data.receiptId)
+            }
         })
     }
 
