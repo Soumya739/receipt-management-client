@@ -39,7 +39,6 @@ export class Home extends Component {
             <div>
                 <Segment>
                     <UploadReceipt onImageUpload={this.onImageUpload} onSubmitReceiptForm={this.onSubmitReceiptForm} receiptFormSubmitted={this.state.receiptFormSubmitted} />
-
                     {this.state.imageData.length !== 0 ?
                         <>
                             <Divider horizontal>And</Divider>

@@ -37,7 +37,6 @@ export class ReceiptDetailsForm extends Component {
                 console.log(this.props.imageData)
             })
             .then(() => {
-                // let xx = this.props.imageData.find((data, index) => data.text === "TOTAL")
                 let totalIndex = this.state.imageData.indexOf(this.state.imageData.find((data, index) => data.text === "TOTAL" || data.text === "Total" || data.text === "total"))
                 for (let i = totalIndex; i < this.state.imageData.length; i++) {
                     if (this.state.imageData[i].text.includes("$")) {
