@@ -23,7 +23,7 @@ class ExpenditureLog extends Component {
         this.props.receipts.map(receipt => (
             Total_Spendings = Total_Spendings + receipt.total_amount
         ))
-        return Total_Spendings
+        return Total_Spendings.toFixed(2)
     }
 
     handleStoreSelection = (e, { value }) => {

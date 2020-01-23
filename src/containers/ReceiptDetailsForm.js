@@ -20,7 +20,7 @@ export class ReceiptDetailsForm extends Component {
     }
 
     componentDidMount() {
-        let amountsAfterTotal = []
+        let amountsAfterTotalinReceipt = []
         return api.expenseType.getAllExpenseType()
             .then(resp => {
                 let newArray = resp.map(aa => ({ "key": aa.category, "text": aa.category, "value": aa.category }))
@@ -34,25 +34,42 @@ export class ReceiptDetailsForm extends Component {
                     store: this.props.imageData[0].text + this.props.imageData[1].text,
                     receiptId: this.props.receiptId
                 })
-                console.log(this.props.imageData)
+                // console.log(this.props.imageData)
             })
             .then(() => {
-                let totalIndex = this.state.imageData.indexOf(this.state.imageData.find((data, index) => data.text === "TOTAL" || data.text === "Total" || data.text === "total"))
-                for (let i = totalIndex; i < this.state.imageData.length; i++) {
+                let totalIndex = this.state.imageData.indexOf(this.state.imageData.find(
+                    (data, index) =>
+                        data.text === "TOTAL" ||
+                        data.text === "Total" ||
+                        data.text === "total" ||
+                        data.text === "GRAND TOTAL" ||
+                        data.text === "Total Sale"
+                ))
+                let startPoint = 1 + totalIndex
+                let stopPoint = 3 + totalIndex
+                for (let i = startPoint; i < stopPoint; i++) {
+                    // console.log("inside for loop! here's the thing: ", this.state.imageData[i].text)
                     if (this.state.imageData[i].text.includes("$")) {
-                        amountsAfterTotal.push(this.state.imageData[i].text)
+                        // console.log("evald to true for dollar sign")
+                        amountsAfterTotalinReceipt.push(this.state.imageData[i].text)
+                    } else if (!isNaN(parseFloat(this.state.imageData[i].text))) {
+                        // console.log("NaN when parsing float", parseFloat(this.state.imageData[i].text))
+                        amountsAfterTotalinReceipt.push((parseFloat(this.state.imageData[i].text)).toString())
+                    }
+                    else {
+                        // console.log("inside the final else condition: ", this.state.imageData[i].text)
                     }
                 }
                 this.setState({
-                    store: this.props.imageData[0].text + this.props.imageData[1].text
+                    store: this.props.imageData[0].text + " " + this.props.imageData[1].text
                 })
                 return totalIndex
             })
             .then(() => {
-                let amounts = amountsAfterTotal.map(amt => amt.replace("$", ""))
+                console.log("amountsAfterTotalinReceipt", amountsAfterTotalinReceipt)
+                let amounts = amountsAfterTotalinReceipt.map(amt => parseFloat(amt.replace("$", "")))
                 amounts.sort((a, b) => a - b)
                 this.setState({ total_amount: amounts[amounts.length - 1] })
-
             })
     }
 
