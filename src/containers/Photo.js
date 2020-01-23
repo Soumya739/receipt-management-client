@@ -42,7 +42,7 @@ export class Photo extends Component {
         } else {
             return (
                 <Segment id="photo-button">
-                    <Button onClick={this.handleGetReceipts}><Icon name='images' />Show Receipts</Button>
+                    <Button onClick={this.handleGetReceipts} size={"large"}><Icon name='images' />Click here to see Receipts</Button>
                 </Segment>
             )
         }

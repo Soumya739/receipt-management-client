@@ -13,7 +13,8 @@ export class Timeline extends Component {
             endDate: "",
             receipts: [],
             filteredReceipts: [],
-            options: []
+            options: [],
+            selectedStore: "all"
         }
     }
 
@@ -42,33 +43,63 @@ export class Timeline extends Component {
 
 
     getSummaryDataWithinRange = (startDate, endDate) => {
-        console.log("getSummaryDataWithinRange")
         if (startDate !== "" && endDate !== "") {
-            let filterStartDate = moment(startDate, "YYYY-MM-DD");
-            let filterEndDate = moment(endDate, "YYYY-MM-DD");
-            let tempFilteredReceipts = this.state.receipts.filter(receipt => {
-                let receiptDate = moment(receipt.generated_on, "YYYY-MM-DD");
-                console.log(receiptDate, filterEndDate, filterStartDate)
-                return receiptDate.isBetween(filterStartDate, filterEndDate);
-            }
+            let filterStartDateMoment = moment(startDate, "YYYY-MM-DD");
+            let filterEndDateMoment = moment(endDate, "YYYY-MM-DD");
+            let tempDateFilteredReceipts = this.filterReceiptsBetweenDates(
+                this.state.receipts, filterStartDateMoment, filterEndDateMoment
             )
-            let newFilteredReceiptStores = tempFilteredReceipts.map(store => ({ "key": store, "text": store, "value": store }))
+            let allStores = tempDateFilteredReceipts.map(
+                receipt => {
+                    return receipt.store
+                }
+            )
+
+            let uniqueStores = [...new Set(allStores)];
+
+            let newFilteredReceiptStores = uniqueStores.map(store => ({ "key": store, "text": store, "value": store }))
             newFilteredReceiptStores.push({ "key": "All", "text": "All", "value": "all" })
 
             this.setState(
                 {
-                    filteredReceipts: tempFilteredReceipts,
-                    startDate: startDate,
-                    endDate: endDate
+                    selectedStore: "all",
+                    filteredReceipts: tempDateFilteredReceipts,
+                    startDate: filterStartDateMoment,
+                    endDate: filterEndDateMoment,
+                    options: newFilteredReceiptStores
                 }, () => console.log(this.state.filteredReceipts)
             )
         }
     }
 
-    // filterReceiptByStore = (store) => {
+    filterReceiptByStore = (store) => {
+        let tempDateFilteredReceipts = this.state.receipts;
+        if (this.state.startDate !== "" && this.state.endDate !== "") {
+            tempDateFilteredReceipts = this.filterReceiptsBetweenDates(
+                this.state.receipts, this.state.startDate, this.state.endDate
+            )
+        }
+        let tempStoreFilteredReceipts = tempDateFilteredReceipts.filter(receipt => {
+            return ((receipt.store === store) || (store === "all"));
+        }
+        )
+        this.setState(
+            {
+                filteredReceipts: tempStoreFilteredReceipts,
+                selectedStore: store
+            }, () => console.log(this.state.filteredReceipts)
+        )
 
-    // }
+    }
 
+    filterReceiptsBetweenDates = (receipts, startDateMoment, endDateMoment) => {
+        let filteredReceipts = receipts.filter(receipt => {
+            let receiptDateMoment = moment(receipt.generated_on, "YYYY-MM-DD");
+            console.log(receiptDateMoment, startDateMoment, endDateMoment)
+            return receiptDateMoment.isBetween(startDateMoment, endDateMoment);
+        });
+        return filteredReceipts;
+    }
 
     render() {
         let { startDate, endDate, filteredReceipts, options } = this.state
@@ -87,6 +118,8 @@ export class Timeline extends Component {
                     <ExpenditureLog
                         receipts={filteredReceipts}
                         options={options}
+                        filterReceiptByStore={this.filterReceiptByStore}
+                        tag={this.state.selectedStore}
                     />
                 </Segment>
             </div>

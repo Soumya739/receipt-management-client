@@ -57,13 +57,13 @@ export class UploadReceipt extends Component {
                         <div {...getRootProps()}>
                             <input {...getInputProps()} />
                             {this.state.image === "" ?
-                                <Button>
+                                <Button size={"large"}>
                                     <Icon name='upload' />
                                     Click here to upload an Image
                                 </Button>
                                 :
                                 <>
-                                    <Button>
+                                    <Button size={"large"}>
                                         <Icon name='upload' />
                                         Change uploaded image
                                 </Button>
@@ -73,7 +73,7 @@ export class UploadReceipt extends Component {
                 </Dropzone>
                 <Form onSubmit={(e) => this.handleSubmitImage(e)}>
                     <Button.Group>
-                        {this.state.image === "" ? <Button negative disabled>Submit Image</Button> : <Button positive type="submit">Submit Image</Button>}
+                        {this.state.image === "" ? <Button negative disabled size={"large"}>Submit Image</Button> : <Button positive type="submit" size={"large"}>Submit Image</Button>}
                     </Button.Group>
                 </Form>
             </div>

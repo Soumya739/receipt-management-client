@@ -12,7 +12,7 @@ export class Footer extends Component {
         const { activeItem } = this.state
         return (
             <Menu.Menu >
-                <Menu color={"red"} pointing icon='labeled' fixed={"bottom"} widths={8}>
+                <Menu color={"blue"} pointing icon='labeled' fixed={"bottom"} widths={8} inverted>
                     <Menu.Item
                         position={"left"}
                         as={Link} to='/about'

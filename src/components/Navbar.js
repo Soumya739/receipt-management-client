@@ -19,7 +19,7 @@ class Navbar extends Component {
         const { activeItem } = this.state
         return (
             <Menu.Menu >
-                <Menu pointing icon='labeled' fixed={"top"} widths={9}>
+                <Menu color={"blue"} pointing icon='labeled' fixed={"top"} widths={9} inverted>
                     <Menu.Item
                         as={Link} to='/home'
                         name='Home'

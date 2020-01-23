@@ -29,7 +29,7 @@ export class WelcomePage extends Component {
             <div>
                 <h1 style={{ color: "black" }}><strong>Welcome to Receipt Management App</strong></h1>
                 <br></br>
-                <Button color={"blue"} onClick={this.showSignup}><Icon name='add user' />SignUP</Button>    <Button color={"blue"} onClick={this.showLogin}><Icon name='sign in' />Login</Button>
+                <Button color={"blue"} size={"large"} onClick={this.showSignup}><Icon name='add user' />SignUP</Button>    <Button color={"blue"} size={"large"} onClick={this.showLogin}><Icon name='sign in' />Login</Button>
                 <Signup dimmer={true} close={this.closeSignup} open={this.state.showSignup} size={"small"} />
                 <Login dimmer={true} close={this.closeLogin} open={this.state.showLogin} size={"tiny"} />
             </div>
