@@ -35,8 +35,7 @@ export class RangeCalendar extends Component {
                     onDatesChange={({ startDate, endDate }) => this.setState({ startDate, endDate })}
                     focusedInput={this.state.focusedInput}
                     onFocusChange={focusedInput => this.setState({ focusedInput })}
-                />
-                <Button onClick={this.onDateSelection}>Get Data</Button>
+                />  <Button positive onClick={this.onDateSelection}>Get Summary</Button>
                 <br></br>
             </div>
         )

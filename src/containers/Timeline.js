@@ -35,13 +35,12 @@ export class Timeline extends Component {
                 <Segment id="timeline">
                     <RangeCalendar onGetSummaryDataWithinRange={this.getSummaryDataWithinRange} />
                     <br></br>
-                    <Divider horizontal>
+                    <Divider horizontal section>
                         <Header as='h2'>
                             <Icon name='file alternate' />
                             Expense Summary
                     </Header>
                     </Divider>
-                    <br></br>
                     <ExpenditureLog
                         startDate={startDate}
                         endDate={endDate}

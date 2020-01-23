@@ -21,7 +21,6 @@ class Navbar extends Component {
             <Menu.Menu >
                 <Menu pointing icon='labeled' fixed={"top"} widths={9}>
                     <Menu.Item
-                        color={"teal"}
                         as={Link} to='/home'
                         name='Home'
                         active={activeItem === 'Home'}

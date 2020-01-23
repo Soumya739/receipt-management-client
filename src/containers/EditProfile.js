@@ -70,13 +70,16 @@ export class EditProfile extends Component {
         } else {
             return (
                 <Segment id="edit-Profile">
-                    Edit Profile
-                <Form onSubmit={(e) => this.handleFormSubmit(e)}>
+                    <h2 style={{ textAlign: "center" }}><strong>Edit Profile</strong></h2>
+                    <Form onSubmit={(e) => this.handleFormSubmit(e)}>
                         <Form.Field>
                             <label>Username:</label>
                             <input placeholder='Username' id="username" value={username} onChange={(e) => this.handleFormInput(e)} required />
                         </Form.Field>
-                        <Dropdown placeholder='Gender' id="gender" value={gender} selection options={options} onChange={this.handleGenderSelection} />
+                        <Form.Field>
+                            <label>Gender:</label>
+                            <Dropdown placeholder='Gender' id="gender" value={gender} selection options={options} onChange={this.handleGenderSelection} />
+                        </Form.Field>
                         <Form.Field>
                             <label>Email:</label>
                             <input placeholder='name@example.com' id="email" value={email} onChange={(e) => this.handleFormInput(e)} required />

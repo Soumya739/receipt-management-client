@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Table, Icon, Dropdown } from 'semantic-ui-react'
 import TableExpenseRow from '../components/TableExpenseRow'
 import TotalSpending from '../components/TotalSpending'
-import { connect } from 'react-redux';
 import { api } from '../services/api'
 
 // let { startDate, 
@@ -91,24 +90,27 @@ class ExpenditureLog extends Component {
                 <Table color="orange">
                     <Table.Header>
                         <Table.Row>
-                            <Table.HeaderCell><Icon name='map marker' />Store<Icon name='dropdown' /><Dropdown placeholder='Store' id="store" selection options={this.state.options} onChange={this.handleStoreSelection} /></Table.HeaderCell>
-                            <Table.HeaderCell><Icon name='dollar sign' />Amount<Icon name='dropdown' /></Table.HeaderCell>
-                            <Table.HeaderCell><Icon name='calendar alternate' />Bill Generated on<Icon name='dropdown' /></Table.HeaderCell>
-                            <Table.HeaderCell><Icon name='tags' />Expense Type<Icon name='dropdown' /></Table.HeaderCell>
+                            <Table.HeaderCell><Icon name='map marker' /><strong><u>Store</u></strong><Icon name='dropdown' /><Dropdown placeholder='Store' id="store" selection options={this.state.options} onChange={this.handleStoreSelection} /></Table.HeaderCell>
+                            <Table.HeaderCell><Icon name='dollar sign' /><strong><u>Amount</u></strong><Icon name='dropdown' /></Table.HeaderCell>
+                            <Table.HeaderCell><Icon name='calendar alternate' /><strong><u>Bill Generated on</u></strong><Icon name='dropdown' /></Table.HeaderCell>
+                            <Table.HeaderCell><Icon name='tags' /><strong><u>Expense Type</u></strong><Icon name='dropdown' /></Table.HeaderCell>
                         </Table.Row>
                     </Table.Header>
                     <Table.Body>
                         {this.showReceiptData()}
                     </Table.Body>
+                    <Table.Footer>
+                        <Table.Row>
+                            <Table.HeaderCell>Total receipts: {this.state.receipts.length}</Table.HeaderCell>
+                            <Table.HeaderCell>Total: {this.getTotalSpending()}</Table.HeaderCell>
+                            <Table.HeaderCell></Table.HeaderCell>
+                            <Table.HeaderCell></Table.HeaderCell>
+                        </Table.Row>
+                    </Table.Footer>
                 </Table>
             </>
         )
     }
 }
 
-// const mapStateToProps = state => {
-//     return {
-//         receipts: state.receipts,
-//     }
-// }
-export default connect(null, null)(ExpenditureLog)
+export default ExpenditureLog

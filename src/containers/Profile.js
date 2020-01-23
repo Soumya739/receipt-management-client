@@ -4,7 +4,6 @@ import { NavLink } from 'react-router-dom'
 import { api } from '../services/api'
 import { Card, Icon, Image, Segment } from 'semantic-ui-react'
 import girl from '../images/girl.jpg'
-import b2 from '../images/b2.jpg'
 
 const boy = 'https://react.semantic-ui.com/images/avatar/large/matthew.png'
 
@@ -28,9 +27,6 @@ export class Profile extends Component {
 
     render() {
         let { username, email, city, country, contact_num, state, gender } = this.state.current_user
-        // if (this.state.editTrigger) {
-        //     return <EditProfile onhandleEditTrigger={this.handleEditTrigger} />
-        // } else {
         return (
             <div >
                 <Segment id="profile">
@@ -56,7 +52,6 @@ export class Profile extends Component {
             </div>
         )
     }
-    // }
 }
 
 export default Profile

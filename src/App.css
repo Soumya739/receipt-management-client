@@ -57,8 +57,10 @@
   background-size: cover;
   position: absolute;
   top: 70px;
-  left: 10px;
+  left: 50px;
   width: 90%;
+  padding: 3%;
+ 
 }
 
 
@@ -88,8 +90,3 @@
 .CalendarDay__hovered_span {
   background: brown;
 }
-
-.centered {
-    display: flex;
-    justify-content: center;
-  }
