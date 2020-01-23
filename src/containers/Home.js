@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import ExpenseGraph from './ExpenseGraph'
 import UploadReceipt from './UploadReceipt'
 import ReceiptDetailsForm from './ReceiptDetailsForm'
-import { Segment, Divider, Header, Icon } from 'semantic-ui-react'
+import { Segment, Divider, Header, Icon, Dimmer, Loader } from 'semantic-ui-react'
 import { api } from '../services/api'
 
 export class Home extends Component {
@@ -13,7 +13,8 @@ export class Home extends Component {
             receiptFormSubmitted: false,
             receiptId: "",
             hasImageData: false,
-            graphData: {}
+            graphData: {},
+            loadingImageContents: false
         };
     }
 
@@ -25,18 +26,26 @@ export class Home extends Component {
     }
 
     onImageUpload = (imageData, receiptId) => {
+        this.onSetLoaderStatus()
         this.setState({ imageData: imageData, receiptId: receiptId, hasImageData: true })
     }
     onSubmitReceiptForm = () => {
         this.setState({ receiptFormSubmitted: !this.state.receiptFormSubmitted, hasImageData: false, imageData: [] })
     }
 
+    onSetLoaderStatus = () => {
+        this.setState({ loadingImageContents: !this.state.loadingImageContents })
+    }
+
     render() {
         return (
             <div >
                 <Segment id="home">
+                    <Dimmer active={this.state.loadingImageContents}>
+                        <Loader size='massive'>Loading</Loader>
+                    </Dimmer>
                     <br></br>
-                    <UploadReceipt onImageUpload={this.onImageUpload} onSubmitReceiptForm={this.onSubmitReceiptForm} receiptFormSubmitted={this.state.receiptFormSubmitted} />
+                    <UploadReceipt onImageUpload={this.onImageUpload} onSubmitReceiptForm={this.onSubmitReceiptForm} receiptFormSubmitted={this.state.receiptFormSubmitted} onSetLoaderStatus={this.onSetLoaderStatus} />
                     <br></br>
                     {this.state.imageData.length !== 0 ?
                         <>

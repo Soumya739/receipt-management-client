@@ -21,6 +21,7 @@ export class UploadReceipt extends Component {
 
     handleSubmitImage = (e) => {
         e.preventDefault()
+        this.props.onSetLoaderStatus()
         const formdata = new FormData(e.target)
         formdata.append('image', this.state.image)
         axios({
@@ -33,8 +34,6 @@ export class UploadReceipt extends Component {
                 Authorization: localStorage.getItem('token')
             }
         }).then(res => {
-            console.log("here we go:", JSON.parse(res.data.imageData))
-            console.log(res.data.receiptId)
             let response = JSON.parse(res.data.imageData)
             if (response.status === "Running") {
                 console.log(res)

@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import RangeCalendar from './RangeCalendar'
 import ExpenditureLog from './ExpenditureLog'
 import { Segment, Header, Divider, Icon } from 'semantic-ui-react'
+import moment from 'moment'
+import { api } from '../services/api'
 
 export class Timeline extends Component {
     constructor() {
@@ -9,26 +11,67 @@ export class Timeline extends Component {
         this.state = {
             startDate: "",
             endDate: "",
-            // filterType: "All",
-            // subFilterType: "All"
+            receipts: [],
+            filteredReceipts: [],
+            options: []
         }
     }
 
-    getSummaryDataWithinRange = (startDate, endDate) => {
-        this.setState({ startDate: startDate, endDate: endDate })
+    componentDidMount() {
+        return api.receipt.getAllStoresFromUserReceipts()
+            .then(resp => {
+                let newArray = resp.map(store => ({ "key": store, "text": store, "value": store }))
+                newArray.push({ "key": "All", "text": "All", "value": "all" })
+                return newArray
+            })
+            .then((newArray) => {
+                this.setState({ options: newArray })
+                return (
+                    api.receipt.GetUserReceipts()
+                        .then((res) => {
+                            this.setState({ receipts: res })
+                            this.setState({ filteredReceipts: res })
+                        })
+                )
+            })
     }
 
-    // onChangeFilterType = (filterType) => {
-    //     this.setState({ filterType: filterType })
+    // getSummaryDataWithinRange = (startDate, endDate) => {
+    //     this.setState({ startDate: startDate, endDate: endDate })
     // }
 
-    // onChangeSubFilterType = (subFilterType) => {
-    //     this.setState({ subFilterType: subFilterType })
+
+    getSummaryDataWithinRange = (startDate, endDate) => {
+        console.log("getSummaryDataWithinRange")
+        if (startDate !== "" && endDate !== "") {
+            let filterStartDate = moment(startDate, "YYYY-MM-DD");
+            let filterEndDate = moment(endDate, "YYYY-MM-DD");
+            let tempFilteredReceipts = this.state.receipts.filter(receipt => {
+                let receiptDate = moment(receipt.generated_on, "YYYY-MM-DD");
+                console.log(receiptDate, filterEndDate, filterStartDate)
+                return receiptDate.isBetween(filterStartDate, filterEndDate);
+            }
+            )
+            let newFilteredReceiptStores = tempFilteredReceipts.map(store => ({ "key": store, "text": store, "value": store }))
+            newFilteredReceiptStores.push({ "key": "All", "text": "All", "value": "all" })
+
+            this.setState(
+                {
+                    filteredReceipts: tempFilteredReceipts,
+                    startDate: startDate,
+                    endDate: endDate
+                }, () => console.log(this.state.filteredReceipts)
+            )
+        }
+    }
+
+    // filterReceiptByStore = (store) => {
+
     // }
 
 
     render() {
-        let { startDate, endDate } = this.state
+        let { startDate, endDate, filteredReceipts, options } = this.state
         console.log(startDate, endDate)
         return (
             <div >
@@ -42,8 +85,8 @@ export class Timeline extends Component {
                     </Header>
                     </Divider>
                     <ExpenditureLog
-                        startDate={startDate}
-                        endDate={endDate}
+                        receipts={filteredReceipts}
+                        options={options}
                     />
                 </Segment>
             </div>
