@@ -20,7 +20,6 @@ export class Home extends Component {
     componentDidMount() {
         api.receipt.get_amount_per_type()
             .then(res => {
-                console.log("here", res)
                 this.setState({ graphData: res })
             })
     }
@@ -32,13 +31,13 @@ export class Home extends Component {
         this.setState({ receiptFormSubmitted: !this.state.receiptFormSubmitted, hasImageData: false, imageData: [] })
     }
 
-
     render() {
         return (
-
-            <div>
-                <Segment>
+            <div >
+                <Segment id="home">
+                    <br></br>
                     <UploadReceipt onImageUpload={this.onImageUpload} onSubmitReceiptForm={this.onSubmitReceiptForm} receiptFormSubmitted={this.state.receiptFormSubmitted} />
+                    <br></br>
                     {this.state.imageData.length !== 0 ?
                         <>
                             <Divider horizontal>And</Divider>
@@ -46,17 +45,15 @@ export class Home extends Component {
                         </>
                         : null
                     }
-                </Segment>
-                <Divider horizontal>
-                    <Header as='h4'>
-                        <Icon name='bar chart' />
-                        Chart
+                    <Divider horizontal>
+                        <Header as='h4'>
+                            <Icon name='bar chart' />
+                            Chart
                     </Header>
-                </Divider>
-                {Object.keys(this.state.graphData).length !== 0 ?
-                    <ExpenseGraph graphData={this.state.graphData} />
-                    : null
-                }
+                    </Divider>
+                    <br></br>
+                    <ExpenseGraph graphData={this.state.graphData} hasImageData={this.state.hasImageData} />
+                </Segment>
             </div>
         )
     }

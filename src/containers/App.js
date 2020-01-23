@@ -9,13 +9,14 @@ import Timeline from './Timeline'
 import Photo from './Photo'
 import Profile from './Profile'
 import EditProfile from './EditProfile'
+import { Segment } from 'semantic-ui-react'
 
 
 export class App extends Component {
   render() {
     if (localStorage.getItem('token')) {
       return (
-        <div>
+        <Segment>
           <Router>
             <Navbar />
             <Route exact path="/home" render={() => <Home />} />
@@ -23,15 +24,15 @@ export class App extends Component {
             <Route exact path="/timeline" render={() => <Timeline />} />
             <Route exact path="/profile" render={() => <Profile />} />
             <Route exact path="/edit_profile" render={() => <EditProfile />} />
-            <Footer />
           </Router>
-        </div>
+        </Segment>
       )
     } else {
       return (
-        <div>
+        <div id="welcome-page">
           <Router>
             <WelcomePage />
+            <Footer />
           </Router>
         </div>
       )

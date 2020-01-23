@@ -1,42 +1,61 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { Image, Button, Card, Icon } from 'semantic-ui-react'
+import { api } from '../services/api';
 
-const DisplayReceipt = (props) => {
+class DisplayReceipt extends Component {
+    constructor() {
+        super()
+        this.state = {
+            imageDeleted: false
+        }
+    }
 
-    return (
-        <div>
-            <Card>
-                <Card.Content>
-                    <Image
-                        bordered
-                        src={props.receipt.image.url}
-                        as='a'
-                        size='medium'
-                        href={props.receipt.image.url}
-                        target='_blank'
-                    />
-                    <Card.Description>
-                        <strong><Icon name='map marker' />Store: {props.receipt.store}</strong>
-                        <p><Icon name='calendar alternate' />Generated on: {props.receipt.generated_on}</p>
-                        <p><Icon name='calendar alternate' />Total Amount: {props.receipt.total_amount}</p>
-                        <p> Tags:</p>
-                        {props.receipt.expense_type ?
-                            <ul>
-                                {props.receipt.expense_type.map((tag, index) => <li key={index}>{tag}</li>)}
-                            </ul>
-                            : null
-                        }
+    deleteReceipt = () => {
+        console.log("deleting")
+        api.receipt.deleteAReceipt(this.props.receipt.id)
+            .then(res => {
+                this.props.handleGetReceipts()
+            })
 
-
-                    </Card.Description>
-                </Card.Content>
-                <Card.Content extra>
-                    <Button color='red'>
-                        Delete
-                    </Button>
-                </Card.Content>
-            </Card>
-        </div>
-    )
+    }
+    render() {
+        let { image, store, generated_on, total_amount, expense_type } = this.props.receipt
+        return (
+            <div>
+                {this.state.imageDeleted === false ?
+                    <Card>
+                        <Card.Content>
+                            <Image
+                                bordered
+                                src={image.url}
+                                as='a'
+                                size='medium'
+                                href={image.url}
+                                target='_blank'
+                            />
+                            <Card.Description>
+                                <strong><Icon name='map marker' />Store: {store}</strong>
+                                <p><Icon name='calendar alternate' />Generated on: {generated_on}</p>
+                                <p><Icon name='calendar alternate' />Total Amount: {total_amount}</p>
+                                <p> Tags:</p>
+                                {expense_type ?
+                                    <ul>
+                                        {expense_type.map((tag, index) => <li key={index}>{tag}</li>)}
+                                    </ul>
+                                    : null
+                                }
+                            </Card.Description>
+                        </Card.Content>
+                        <Card.Content extra>
+                            <Button color='red' type="reset" onClick={this.deleteReceipt}>
+                                Delete
+                        </Button>
+                        </Card.Content>
+                    </Card>
+                    : null
+                }
+            </div>
+        )
+    }
 }
 export default DisplayReceipt

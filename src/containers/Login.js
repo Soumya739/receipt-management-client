@@ -26,7 +26,7 @@ export class Login extends Component {
                 .then(res => {
                     if (!!res.user) {
                         this.props.login(res)
-                        window.location.reload(true);
+                        window.location.replace("http://localhost:3001/home")
                     } else {
                         window.location.reload(true);
                     }

@@ -27,7 +27,7 @@ export class AddTextField extends Component {
                 <Form.Field>
                     <label><Icon name='tags' />Add Expense Type:</label>
                     {expense_type.length !== 0 ? <p>Added: {expense_type.map((tag, index) => <li key={index}>{tag}</li>)}</p> : null}
-                    <input placeholder='Expense Type' id="expense_type" onChange={(e) => this.handleFormInput(e)} value={this.state.tag} />
+                    <input placeholder='Expense Type' id="expense_type" onChange={(e) => this.handleFormInput(e)} value={this.state.tag} style={{ width: "50%" }} />
                     <Button positive type="reset" onClick={this.handleAddExpenseType}>Add</Button>
                 </Form.Field>
             </>

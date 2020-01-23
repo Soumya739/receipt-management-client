@@ -27,22 +27,25 @@ export class Photo extends Component {
     displayAllReceipts = () => {
         return (
             <Card.Group itemsPerRow={4} stackable={true} centered={true}>
-                {this.state.receipts.map(receipt => (<DisplayReceipt receipt={receipt} key={receipt.id} />))}
+                {this.state.receipts.map(receipt => (<DisplayReceipt receipt={receipt} key={receipt.id} handleGetReceipts={this.handleGetReceipts} />))}
             </Card.Group>
         )
     }
 
     render() {
-        return (
-            <div>
-                <Segment>
+        if (this.state.receipts.length !== 0) {
+            return (
+                <div id="photos">
+                    {this.displayAllReceipts()}
+                </div>
+            )
+        } else {
+            return (
+                <Segment id="photo-button">
                     <Button onClick={this.handleGetReceipts}><Icon name='images' />Show Receipts</Button>
-                    <div>
-                        {this.displayAllReceipts()}
-                    </div>
                 </Segment>
-            </div>
-        )
+            )
+        }
     }
 }
 const mapStateToProps = state => {

@@ -69,7 +69,7 @@ export class EditProfile extends Component {
             return <Redirect to="/profile" />
         } else {
             return (
-                <Segment className="centered">
+                <Segment id="edit-Profile">
                     Edit Profile
                 <Form onSubmit={(e) => this.handleFormSubmit(e)}>
                         <Form.Field>

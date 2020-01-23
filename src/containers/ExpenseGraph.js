@@ -4,8 +4,31 @@ import CanvasJSReact from '../canvasjs.react'
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
 export class ExpenseGraph extends Component {
+    constructor() {
+        super()
+        this.state = {
+            options: {
+                title: {
+                    text: 'Expenses Distibution Chart'
+                },
+                data: [
+                    {
+                        type: "column",
+                        dataPoints: [
+                            { label: "Expense-1", y: 10 },
+                            { label: "Expense-1", y: 20 },
+                            { label: "Expense-1", y: 30 },
+                            { label: "Expense-1", y: 10 },
+                            { label: "Expense-1", y: 15 },
+                            { label: "Expense-1", y: 25 },
+                            { label: "Expense-1", y: 10 }
+                        ]
+                    }
+                ]
+            }
+        }
+    }
     expenseGraphData = () => {
-        console.log(this.props.graphData)
         let total = 0
         let keysValues = Object.values(this.props.graphData)
         keysValues.map(amt => total = total + amt)
@@ -27,15 +50,26 @@ export class ExpenseGraph extends Component {
                 }
             ]
         };
+        if (Object.keys(this.props.graphData).length !== 0) {
+            return (
+                <div style={{ height: "500px", width: "90%", margin: "auto" }}>
+                    <CanvasJSChart
+                        options={options}
+                        onRef={ref => this.chart = ref}
+                    />
+                </div>
+            )
+        } else {
+            return (
+                <div style={{ height: "500px", width: "90%", margin: "auto" }}>
+                    <CanvasJSChart
+                        options={this.state.options}
+                        onRef={ref => this.chart = ref}
+                    />
+                </div>
+            )
+        }
 
-        return (
-            <div style={{ height: "500px", width: "80%", margin: "auto" }}>
-                <CanvasJSChart
-                    options={options}
-                    onRef={ref => this.chart = ref}
-                />
-            </div>
-        )
     }
 }
 

@@ -24,7 +24,8 @@ export class RangeCalendar extends Component {
 
     render() {
         return (
-            <div>
+            <div style={{ textAlign: "center" }}>
+                <br></br>
                 <DateRangePicker
                     isOutsideRange={day => day.isAfter(moment())}
                     startDate={this.state.startDate}
@@ -36,6 +37,7 @@ export class RangeCalendar extends Component {
                     onFocusChange={focusedInput => this.setState({ focusedInput })}
                 />
                 <Button onClick={this.onDateSelection}>Get Data</Button>
+                <br></br>
             </div>
         )
     }

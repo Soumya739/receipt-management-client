@@ -1,9 +1,10 @@
 import React from 'react';
 
-const TotalSpending = () => {
+const TotalSpending = (props) => {
     return (
-        <div>
-
+        <div style={{ textAlign: "right" }}>
+            <h2><strong>Total Spending:</strong>  ${props.totalSpending}</h2>
+            <br></br>
         </div>
     )
 }

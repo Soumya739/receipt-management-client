@@ -90,7 +90,6 @@ export class ReceiptDetailsForm extends Component {
 
     handleFormSummissionProcess = (e) => {
         const index = this.state.expense_type.indexOf("other");
-        console.log("other index", index)
         if (index > -1) {
             this.state.expense_type.splice(index, 1);
         }
@@ -134,19 +133,19 @@ export class ReceiptDetailsForm extends Component {
                 <Form onSubmit={(e) => this.handleFormSummissionProcess(e)}>
                     <Form.Field>
                         <label><Icon name='map marker' />Store:</label>
-                        <input placeholder='Store Name' id="store" value={store} onChange={(e) => this.handleFormInput(e)} required />
+                        <input placeholder='Store Name' id="store" value={store} onChange={(e) => this.handleFormInput(e)} required style={{ width: "90%" }} />
                     </Form.Field>
                     <Form.Field>
                         <label><Icon name='dollar sign' />Total Amount:</label>
-                        <input placeholder='Total Amount' id="total_amount" value={total_amount} onChange={(e) => this.handleFormInput(e)} required />
+                        <input placeholder='Total Amount' id="total_amount" value={total_amount} onChange={(e) => this.handleFormInput(e)} required style={{ width: "50%" }} />
                     </Form.Field>
                     <Form.Field>
                         <label><Icon name='calendar alternate' />Generated on:</label>
-                        <input type="date" max={maxDate} placeholder='Date: mm/dd/yyyy' id="generated_on" value={generated_on} onChange={(e) => this.handleFormInput(e)} required />
+                        <input type="date" max={maxDate} placeholder='Date: mm/dd/yyyy' id="generated_on" value={generated_on} onChange={(e) => this.handleFormInput(e)} required style={{ width: "50%" }} />
                     </Form.Field>
                     <Form.Field>
                         <label><Icon name='tags' />Expense Type:</label>
-                        <Dropdown placeholder='Expense Type' id="expense_type" fluid multiple selection options={this.state.options} onChange={this.onChangeselection} value={this.state.expense_type} />
+                        <Dropdown placeholder='Expense Type' id="expense_type" fluid multiple selection options={this.state.options} onChange={this.onChangeselection} value={this.state.expense_type} style={{ width: "90%" }} />
                     </Form.Field>
                     {this.onOtherSelection()}
                     <Button.Group>
@@ -159,11 +158,5 @@ export class ReceiptDetailsForm extends Component {
         )
     }
 }
-
-// const mapStateToProps = state => {
-//     return {
-//         current_user: state.current_user,
-//     }
-// }
 
 export default connect(null, null)(ReceiptDetailsForm)

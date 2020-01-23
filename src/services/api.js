@@ -147,6 +147,19 @@ const updateReceipt = (data) => {
     })
         .then(resp => resp.json())
 }
+const deleteAReceipt = (receiptId) => {
+    return fetch(Base_URL + `/receipts/${receiptId}`, {
+        method: "Delete",
+        headers: {
+            "Content-Type": "application/json",
+            Accepts: 'application/json',
+            Authorization: localStorage.getItem('token')
+        },
+        body: JSON.stringify({
+            receipt_id: receiptId
+        })
+    })
+}
 
 const get_amount_per_type = () => {
     return fetch(Base_URL + "/get_amount_per_type", {
@@ -173,7 +186,8 @@ export const api = {
         GetUserReceipts,
         getAllStoresFromUserReceipts,
         updateReceipt,
-        get_amount_per_type
+        get_amount_per_type,
+        deleteAReceipt
     },
     expenseType: {
         getAllExpenseType,

@@ -19,8 +19,9 @@ class Navbar extends Component {
         const { activeItem } = this.state
         return (
             <Menu.Menu >
-                <Menu pointing icon='labeled'>
+                <Menu pointing icon='labeled' fixed={"top"} widths={9}>
                     <Menu.Item
+                        color={"teal"}
                         as={Link} to='/home'
                         name='Home'
                         active={activeItem === 'Home'}
@@ -57,6 +58,7 @@ class Navbar extends Component {
                         Profile
                     </Menu.Item>
                     <Menu.Item
+                        position={"right"}
                         name='Logout'
                         active={activeItem === 'Logout'}
                         onClick={this.onLogout}
